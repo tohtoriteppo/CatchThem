@@ -1,0 +1,167 @@
+fileFormatVersion: 2
+guid: c52cf1b1d63c2ce44a3e2c98262e814c
+timeCreated: 1541066219
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: cable_1
+    100002: cable_2
+    100004: cable_3
+    100006: coin.
+    100008: Dumpster_1
+    100010: Dumpster_2
+    100012: road_broken
+    100014: //RootNode
+    100016: road_props_1
+    100018: road_props_2
+    100020: road_props_3
+    100022: road_props_4
+    100024: road_props_5
+    100026: road_props_6
+    100028: road_props_7
+    100030: road_props_8
+    100032: road_solid
+    100034: street_light_1
+    100036: street_light_2
+    400000: cable_1
+    400002: cable_2
+    400004: cable_3
+    400006: coin.
+    400008: Dumpster_1
+    400010: Dumpster_2
+    400012: road_broken
+    400014: //RootNode
+    400016: road_props_1
+    400018: road_props_2
+    400020: road_props_3
+    400022: road_props_4
+    400024: road_props_5
+    400026: road_props_6
+    400028: road_props_7
+    400030: road_props_8
+    400032: road_solid
+    400034: street_light_1
+    400036: street_light_2
+    2300000: cable_1
+    2300002: cable_2
+    2300004: cable_3
+    2300006: coin.
+    2300008: Dumpster_1
+    2300010: Dumpster_2
+    2300012: road_broken
+    2300014: road_props_1
+    2300016: road_props_2
+    2300018: road_props_3
+    2300020: road_props_4
+    2300022: road_props_5
+    2300024: road_props_6
+    2300026: road_props_7
+    2300028: road_props_8
+    2300030: road_solid
+    2300032: street_light_1
+    2300034: street_light_2
+    3300000: cable_1
+    3300002: cable_2
+    3300004: cable_3
+    3300006: coin.
+    3300008: Dumpster_1
+    3300010: Dumpster_2
+    3300012: road_broken
+    3300014: road_props_1
+    3300016: road_props_2
+    3300018: road_props_3
+    3300020: road_props_4
+    3300022: road_props_5
+    3300024: road_props_6
+    3300026: road_props_7
+    3300028: road_props_8
+    3300030: road_solid
+    3300032: street_light_1
+    3300034: street_light_2
+    4300000: road_props_1
+    4300002: street_light_2
+    4300004: road_props_2
+    4300006: road_props_4
+    4300008: road_props_6
+    4300010: road_props_3
+    4300012: Dumpster_2
+    4300014: Dumpster_1
+    4300016: road_props_5
+    4300018: road_broken
+    4300020: cable_2
+    4300022: cable_1
+    4300024: cable_3
+    4300026: road_solid
+    4300028: road_props_8
+    4300030: road_props_7
+    4300032: street_light_1
+    4300034: coin.
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
