@@ -13036,6 +13036,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1042926177}
   - component: {fileID: 1042926176}
+  - component: {fileID: 1042926178}
   m_Layer: 0
   m_Name: Trail
   m_TagString: Untagged
@@ -13059,8 +13060,7 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 4f240c09f0651e046aaa9a0b991e3240, type: 2}
-  - {fileID: 2100000, guid: e027834f4a07ed14e98251b5fa0afdbe, type: 2}
+  - {fileID: 2100000, guid: cb9a384c1013e744eb811e156454b686, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13089,13 +13089,22 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.7702694
+        value: 0.3716221
         inSlope: 0
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.88690484
+        value: 0.09459829
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -13143,12 +13152,23 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1042926175}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.4028764, y: 0.58, z: -3.77}
-  m_LocalScale: {x: 0.52789, y: 0.52789, z: 0.52789}
+  m_LocalPosition: {x: -5.4028764, y: 0.58, z: -3.08}
+  m_LocalScale: {x: 0.4103606, y: 0.52789, z: 0.52789}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1042926178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1042926175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f376eb2928d04545b9e7fa0d8caf573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1051156825
 GameObject:
   m_ObjectHideFlags: 0

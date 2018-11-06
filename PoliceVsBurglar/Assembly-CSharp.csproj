@@ -64,6 +64,7 @@
     <Compile Include="Assets\burglarLogic.cs" />
     <Compile Include="Assets\CameraController.cs" />
     <Compile Include="Assets\CubeMove.cs" />
+    <Compile Include="Assets\Effects\move.cs" />
     <Compile Include="Assets\gameController.cs" />
     <Compile Include="Assets\movement.cs" />
     <Compile Include="Assets\policeLogic.cs" />
