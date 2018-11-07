@@ -11,19 +11,23 @@ public class burglarLogic : MonoBehaviour {
     private float slowAmount;
     private float originalSpeed;
     private float deathCounter = 0;
+    private float bagScaleFactor = 0.05f;
     private int playerNum;
     private int respawnLimit = 180;
     private int bagSize;
     private bool dead = false;
     private Vector3 startPosition;
     private Vector3 deadPosition;
+    private Vector3 originalScale;
     private gameController controller;
+   
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         controller = Camera.main.GetComponent<gameController>();
         playerNum = int.Parse(name.Substring(6, 1));
         originalSpeed = GetComponent<movement>().getSpeed();
+        originalScale = transform.GetChild(0).transform.localScale;
         slowAmount = controller.slowPerLoot;
         startPosition = transform.position;
         deadPosition = new Vector3(1000, 1000, 1000);
@@ -33,14 +37,12 @@ public class burglarLogic : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        Debug.Log("MONTA " + robbableObjects.Count);
         if (dead)
         {
             deathCounter++;
             if(deathCounter > respawnLimit)
             {
-                transform.position = controller.getSpawnPoint();
-                dead = false;
+                respawn();
             }
         }
         else
@@ -102,28 +104,31 @@ public class burglarLogic : MonoBehaviour {
 
     public void Die()
     {
-        transform.position = deadPosition;
         deathCounter = 0;
         dead = true;
         while(bagSize > 0)
         {
+            Debug.Log("WHUUT");
             Instantiate(coin, transform.position, transform.rotation);
             bagSize--;
         }
-        
-        
+        transform.position = deadPosition;
     }
     
+    private void respawn()
+    {
+        transform.position = controller.getSpawnPoint();
+        dead = false;
+        reSizeBag();
+    }
+
     private void rob()
     {
-        Debug.Log("Ryöstö");
         if (robbableObjects[0].name.Substring(0,4) == "coin")
         {
-            Debug.Log("Kolikko");
             bagSize++;
             Vector3 scale = transform.GetChild(0).transform.localScale;
-            float factor = 0.05f;
-            transform.GetChild(0).transform.localScale = new Vector3(scale.x + factor, scale.y + factor, scale.z + factor);
+            reSizeBag();
             GetComponent<movement>().setSpeed(Mathf.Max(0, originalSpeed - bagSize * slowAmount));
             GameObject toDestroy = robbableObjects[0];
             robbableObjects.Remove(toDestroy);
@@ -132,13 +137,11 @@ public class burglarLogic : MonoBehaviour {
         }
         else if (robbableObjects[0].gameObject.GetComponent<robbable>().robAmount > 0)
         {
-            Debug.Log("PANKKKI");
             bagSize++;
             robbableObjects[0].gameObject.GetComponent<robbable>().robAmount--;
             robbableObjects[0].gameObject.GetComponent<robbable>().updateValue();
             Vector3 scale = transform.GetChild(0).transform.localScale;
-            float factor = 0.05f;
-            transform.GetChild(0).transform.localScale = new Vector3(scale.x + factor, scale.y + factor, scale.z + factor);
+            reSizeBag();
             GetComponent<movement>().setSpeed(Mathf.Max(0, originalSpeed - bagSize * slowAmount));
             controller.coinGathered();
         }
@@ -156,5 +159,13 @@ public class burglarLogic : MonoBehaviour {
             Instantiate(coin, transform.position, transform.rotation);
             controller.coinDropped();
         }
+    }
+
+    private void reSizeBag()
+    {
+        transform.GetChild(0).transform.localScale = new Vector3(
+            originalScale.x + bagScaleFactor * bagSize, 
+            originalScale.y + bagScaleFactor * bagSize, 
+            originalScale.z + bagScaleFactor * bagSize);
     }
 }

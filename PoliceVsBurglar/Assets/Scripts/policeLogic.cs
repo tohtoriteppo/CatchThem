@@ -25,7 +25,11 @@ public class policeLogic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        direction = (transform.position - lastPos).normalized;
+        Vector3 newDir = (transform.position - lastPos).normalized;
+        if (newDir != Vector3.zero)
+        {
+            direction = newDir;
+        }
         lastPos = transform.position;
         bulletCounter++;
         if(bulletCounter > bulletCD && Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
