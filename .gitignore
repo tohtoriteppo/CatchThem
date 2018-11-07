@@ -11,7 +11,16 @@ sysinfo.txt
 /Assets/AssetStoreTools*
 *.apk
 *.unitypackage
- 
+Corridor/Library/ShaderCache/
+Corridor/Library/metadata/
+PoliceVsBurglar/Library/ScriptAssemblies/BuiltinAssemblies.stamp
+PoliceVsBurglar/Library/shadercompiler-UnityShaderCompiler.exe0.log
+PoliceVsBurglar/Library/ShaderCache.db
+PoliceVsBurglar/Library/CurrentLayout.dwlt
+PoliceVsBurglar/Library/assetDatabase3
+PoliceVsBurglar/Library/LastSceneManagerSetup.txt
+PoliceVsBurglar/PoliceVsBurglar.sln
+
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
@@ -29,7 +38,14 @@ sysinfo.txt
 .consulo/
 /*.tmp
 /*.svd
- 
+PoliceVsBurglar/Assembly-CSharp.csproj
+PoliceVsBurglar/Library/ScriptAssemblies/Assembly-CSharp.dll
+PoliceVsBurglar/Library/ScriptAssemblies/Assembly-CSharp.dll.mdb
+PoliceVsBurglar/Assembly-CSharp-Editor-firstpass.csproj
+PoliceVsBurglar/Assembly-CSharp-Editor.csproj
+PoliceVsBurglar/Assembly-CSharp-firstpass.csproj
+PoliceVsBurglar/Assembly-CSharp.csproj
+
 # ============ #
 # OS generated #
 # ============ #
@@ -41,5 +57,5 @@ Icon?
 ehthumbs.db
 [Tt]humbs.db
 [Dd]esktop.ini
-Corridor/Library/ShaderCache/
-Corridor/Library/metadata/
+PoliceVsBurglar/Assets/burglarLogic.cs
+PoliceVsBurglar/Assets/burglarLogic.cs.meta
