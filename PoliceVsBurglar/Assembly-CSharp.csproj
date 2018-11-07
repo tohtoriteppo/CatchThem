@@ -61,6 +61,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\bulletLogic.cs" />
+    <Compile Include="Assets\coinLogic.cs" />
     <Compile Include="Assets\Scripts\burglarLogic.cs" />
     <Compile Include="Assets\Scripts\collisionLogic.cs" />
     <Compile Include="Assets\Scripts\gameController.cs" />

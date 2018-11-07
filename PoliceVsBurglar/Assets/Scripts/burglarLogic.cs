@@ -7,113 +7,154 @@ public class burglarLogic : MonoBehaviour {
     public int maxBag;
     public GameObject coin;
 
+    private List<GameObject> robbableObjects;
     private float slowAmount;
-    private int playerNum;
-    private GameObject robbableObject;
-    private int bagSize;
     private float originalSpeed;
-    private Vector3 startPosition;
     private float deathCounter = 0;
+    private int playerNum;
     private int respawnLimit = 180;
-    private Vector3 deadPosition;
+    private int bagSize;
     private bool dead = false;
+    private Vector3 startPosition;
+    private Vector3 deadPosition;
+    private gameController controller;
 
 	// Use this for initialization
 	void Start () {
-		playerNum = int.Parse(name.Substring(6, 1));
-        originalSpeed = GetComponent<movement>().speed;
-        slowAmount = Camera.main.GetComponent<gameController>().slowPerLoot;
-        GetComponent<movement>().speed = Camera.main.GetComponent<gameController>().burglarSpeed;
+        controller = Camera.main.GetComponent<gameController>();
+        playerNum = int.Parse(name.Substring(6, 1));
+        originalSpeed = GetComponent<movement>().getSpeed();
+        slowAmount = controller.slowPerLoot;
         startPosition = transform.position;
         deadPosition = new Vector3(1000, 1000, 1000);
-       
+        robbableObjects = new List<GameObject>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        
+
+        Debug.Log("MONTA " + robbableObjects.Count);
         if (dead)
         {
             deathCounter++;
             if(deathCounter > respawnLimit)
             {
-                transform.position = startPosition;
+                transform.position = controller.getSpawnPoint();
                 dead = false;
-                
             }
         }
-        if(robbableObject != null)
+        else
         {
-            if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
+            //if there is an object to rob or pick up
+            if (robbableObjects.Count > 0)
             {
-                if(robbableObject.tag == "coin")
+                if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
                 {
-                    bagSize++;
-                    Vector3 scale = transform.GetChild(0).transform.localScale;
-                    float factor = 0.05f;
-                    transform.GetChild(0).transform.localScale = new Vector3(scale.x + factor, scale.y + factor, scale.z + factor);
-                    GetComponent<movement>().speed = Mathf.Max(0, originalSpeed - bagSize * slowAmount);
-                    Destroy(robbableObject);
-
-                }
-                if (robbableObject.gameObject.GetComponent<robbable>().robAmount > 0)
-                {
-                    robbableObject.gameObject.GetComponent<robbable>().robAmount--;
-                    bagSize++;
-                    Vector3 scale = transform.GetChild(0).transform.localScale;
-                    float factor = 0.05f;
-                    transform.GetChild(0).transform.localScale = new Vector3(scale.x + factor, scale.y + factor, scale.z + factor);
-                    GetComponent<movement>().speed = Mathf.Max(0, originalSpeed - bagSize * slowAmount);
-
+                    rob();
                 }
             }
-        }
-        if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_a"))
-        {
-            if(bagSize > 0)
+            //drop coin
+            if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_a"))
             {
-                bagSize--;
-                Vector3 scale = transform.GetChild(0).transform.localScale;
-                float factor = 0.05f;
-                transform.GetChild(0).transform.localScale = new Vector3(scale.x - factor, scale.y - factor, scale.z - factor);
-                GetComponent<movement>().speed = Mathf.Max(0, originalSpeed - bagSize * slowAmount);
-                Instantiate(coin, transform.position, transform.rotation);
+                dropCoin();
             }
-
         }
+        
         
 
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "robbable")
         {
-            robbableObject = other.gameObject;
+            robbableObjects.Add(other.gameObject);
         }
         if (other.tag == "coin")
         {
-            robbableObject = other.gameObject;
+            robbableObjects.Add(other.gameObject);
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "robbable")
+        {
+            robbableObjects.Remove(other.gameObject);
+        }
+        if (other.tag == "coin")
+        {
+            robbableObjects.Remove(other.gameObject);
+        }
+    }
+
     private void OnCollisionEnter(Collision other)
     {
-        if (other.collider.tag == "robbable")
+        if (other.collider.tag == "police")
         {
-            robbableObject = other.gameObject;
+            if(other.gameObject.name.Substring(0, 6) == "bullet")
+            {
+                Destroy(other.gameObject);
+            }
+            Die();
         }
     }
-    private void OnCollisionExit(Collision other)
-    {
-        if (other.collider.gameObject == robbableObject)
-        {
-            robbableObject = null;
-        }
-    }
+
     public void Die()
     {
         transform.position = deadPosition;
         deathCounter = 0;
         dead = true;
-        bagSize = 0;
+        while(bagSize > 0)
+        {
+            Instantiate(coin, transform.position, transform.rotation);
+            bagSize--;
+        }
+        
+        
+    }
+    
+    private void rob()
+    {
+        Debug.Log("Ryöstö");
+        if (robbableObjects[0].name.Substring(0,4) == "coin")
+        {
+            Debug.Log("Kolikko");
+            bagSize++;
+            Vector3 scale = transform.GetChild(0).transform.localScale;
+            float factor = 0.05f;
+            transform.GetChild(0).transform.localScale = new Vector3(scale.x + factor, scale.y + factor, scale.z + factor);
+            GetComponent<movement>().setSpeed(Mathf.Max(0, originalSpeed - bagSize * slowAmount));
+            GameObject toDestroy = robbableObjects[0];
+            robbableObjects.Remove(toDestroy);
+            Destroy(toDestroy);
+            controller.coinGathered();
+        }
+        else if (robbableObjects[0].gameObject.GetComponent<robbable>().robAmount > 0)
+        {
+            Debug.Log("PANKKKI");
+            bagSize++;
+            robbableObjects[0].gameObject.GetComponent<robbable>().robAmount--;
+            robbableObjects[0].gameObject.GetComponent<robbable>().updateValue();
+            Vector3 scale = transform.GetChild(0).transform.localScale;
+            float factor = 0.05f;
+            transform.GetChild(0).transform.localScale = new Vector3(scale.x + factor, scale.y + factor, scale.z + factor);
+            GetComponent<movement>().setSpeed(Mathf.Max(0, originalSpeed - bagSize * slowAmount));
+            controller.coinGathered();
+        }
+        
+    }
+    private void dropCoin()
+    {
+        if (bagSize > 0)
+        {
+            bagSize--;
+            Vector3 scale = transform.GetChild(0).transform.localScale;
+            float factor = 0.05f;
+            transform.GetChild(0).transform.localScale = new Vector3(scale.x - factor, scale.y - factor, scale.z - factor);
+            GetComponent<movement>().setSpeed(Mathf.Max(0, originalSpeed - bagSize * slowAmount));
+            Instantiate(coin, transform.position, transform.rotation);
+            controller.coinDropped();
+        }
     }
 }

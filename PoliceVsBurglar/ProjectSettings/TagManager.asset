@@ -9,6 +9,8 @@ TagManager:
   - robbable
   - unpassable
   - coin
+  - spawnLocation
+  - canvas
   layers:
   - Default
   - TransparentFX
