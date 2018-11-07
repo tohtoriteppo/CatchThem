@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class movement : MonoBehaviour {
 
+    public bool isPolice;
     private float speed = 0.1f;
     private int playerNum;
 	// Use this for initialization
