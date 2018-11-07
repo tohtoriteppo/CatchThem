@@ -14,7 +14,10 @@ public class gameController : MonoBehaviour {
     public float bulletSpeed;
     public int bulletCD;
     public int bulletLifeTime;
-    
+    public int chargeTimePerBullet;
+    public int bulletAmount;
+    public int bankRefillTime;
+
     public GameObject winText;
     public GameObject timeSlider;
     public GameObject coinsText;
@@ -53,9 +56,9 @@ public class gameController : MonoBehaviour {
             if(leftovers > 0)
             {
                 banks[i].GetComponent<robbable>().robAmount++;
-                banks[i].GetComponent<robbable>().updateValue();
                 leftovers--;
             }
+            banks[i].GetComponent<robbable>().updateValue();
         }
     }
 	

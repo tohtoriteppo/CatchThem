@@ -12,7 +12,7 @@ public class burglarLogic : MonoBehaviour {
     private float originalSpeed;
     private float deathCounter = 0;
     private float bagScaleFactor = 0.05f;
-    private float minSpeed = 0.1f;
+    private float minSpeed = 0.01f;
     private int playerNum;
     private int respawnLimit = 180;
     private int bagSize;
@@ -110,7 +110,7 @@ public class burglarLogic : MonoBehaviour {
         while(bagSize > 0)
         {
             Debug.Log("WHUUT");
-            Instantiate(coin, transform.position, transform.rotation);
+            //Instantiate(coin, transform.position, transform.rotation);
             bagSize--;
             controller.coinDropped();
         }
@@ -149,7 +149,7 @@ public class burglarLogic : MonoBehaviour {
             controller.coinGathered();
         }
         
-    }
+    } 
     private void dropCoin()
     {
         if (bagSize > 0)
