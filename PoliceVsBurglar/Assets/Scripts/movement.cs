@@ -22,8 +22,12 @@ public class movement : MonoBehaviour {
             new Vector3(transform.position.x + Input.GetAxis("p"+playerNum.ToString()+"_joystick_horizontal") * speed, 
             transform.position.y,
             transform.position.z + Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical") * speed);
-        Debug.Log(Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal"));
-        Debug.Log("p" + playerNum.ToString() + "_joystick_vertical");
+
+        //For animator
+        //idle
+        if((Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal"))==0 && (Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical")) == 0){
+                characterAnimator.SetBool("Run", false);
+        }
     }
 
     public void setSpeed(float speedToSet)
