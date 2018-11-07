@@ -11,6 +11,13 @@ sysinfo.txt
 /Assets/AssetStoreTools*
 *.apk
 *.unitypackage
+Corridor/Library/ShaderCache/
+Corridor/Library/metadata/
+PoliceVsBurglar/Library/ScriptAssemblies/BuiltinAssemblies.stamp
+PoliceVsBurglar/Library/shadercompiler-UnityShaderCompiler.exe0.log
+PoliceVsBurglar/Library/ShaderCache.db
+PoliceVsBurglar/Library/CurrentLayout.dwlt
+PoliceVsBurglar/Library/assetDatabase3
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
@@ -29,6 +36,9 @@ sysinfo.txt
 .consulo/
 /*.tmp
 /*.svd
+PoliceVsBurglar/Assembly-CSharp.csproj
+PoliceVsBurglar/Library/ScriptAssemblies/Assembly-CSharp.dll
+PoliceVsBurglar/Library/ScriptAssemblies/Assembly-CSharp.dll.mdb
 
 # ============ #
 # OS generated #
@@ -41,11 +51,3 @@ Icon?
 ehthumbs.db
 [Tt]humbs.db
 [Dd]esktop.ini
-Corridor/Library/ShaderCache/
-Corridor/Library/metadata/
-PoliceVsBurglar/Library/ScriptAssemblies/BuiltinAssemblies.stamp
-PoliceVsBurglar/Assembly-CSharp.csproj
-PoliceVsBurglar/Library/ScriptAssemblies/Assembly-CSharp.dll
-PoliceVsBurglar/Library/ScriptAssemblies/Assembly-CSharp.dll.mdb
-PoliceVsBurglar/Library/shadercompiler-UnityShaderCompiler.exe0.log
-PoliceVsBurglar/Library/ShaderCache.db

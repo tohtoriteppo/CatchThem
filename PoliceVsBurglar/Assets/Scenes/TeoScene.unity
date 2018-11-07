@@ -5211,8 +5211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602dbb9e16792524bbcfd7f5383fa7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalLimit: 15
-  bankCoinsTotal: 23
+  goalLimit: 12
+  bankCoinsTotal: 18
   burglarSpeed: 0.1
   slowPerLoot: 0.009
   policeSpeed: 0.07
