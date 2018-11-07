@@ -24,7 +24,7 @@ public class gameController : MonoBehaviour {
     private float timeLimit = 60.0f;
     private GameObject[] spawnPoints;
 	// Use this for initialization
-	void Awake () {
+	void Start () {
         foreach (string t in Input.GetJoystickNames())
         {
             Debug.Log(t);
@@ -35,6 +35,7 @@ public class gameController : MonoBehaviour {
             obj.GetComponent<movement>().setSpeed(burglarSpeed);
         }
         GameObject[] police = GameObject.FindGameObjectsWithTag("police");
+        Debug.Log("police " + police.Length);
         foreach (GameObject obj in police)
         {
             obj.GetComponent<movement>().setSpeed(policeSpeed);
@@ -52,6 +53,7 @@ public class gameController : MonoBehaviour {
             if(leftovers > 0)
             {
                 banks[i].GetComponent<robbable>().robAmount++;
+                banks[i].GetComponent<robbable>().updateValue();
                 leftovers--;
             }
         }

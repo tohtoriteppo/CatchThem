@@ -12,6 +12,7 @@ public class burglarLogic : MonoBehaviour {
     private float originalSpeed;
     private float deathCounter = 0;
     private float bagScaleFactor = 0.05f;
+    private float minSpeed = 0.1f;
     private int playerNum;
     private int respawnLimit = 180;
     private int bagSize;
@@ -111,6 +112,7 @@ public class burglarLogic : MonoBehaviour {
             Debug.Log("WHUUT");
             Instantiate(coin, transform.position, transform.rotation);
             bagSize--;
+            controller.coinDropped();
         }
         transform.position = deadPosition;
     }
@@ -118,6 +120,7 @@ public class burglarLogic : MonoBehaviour {
     private void respawn()
     {
         transform.position = controller.getSpawnPoint();
+        GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
         dead = false;
         reSizeBag();
     }
@@ -129,7 +132,7 @@ public class burglarLogic : MonoBehaviour {
             bagSize++;
             Vector3 scale = transform.GetChild(0).transform.localScale;
             reSizeBag();
-            GetComponent<movement>().setSpeed(Mathf.Max(0, originalSpeed - bagSize * slowAmount));
+            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
             GameObject toDestroy = robbableObjects[0];
             robbableObjects.Remove(toDestroy);
             Destroy(toDestroy);
@@ -142,7 +145,7 @@ public class burglarLogic : MonoBehaviour {
             robbableObjects[0].gameObject.GetComponent<robbable>().updateValue();
             Vector3 scale = transform.GetChild(0).transform.localScale;
             reSizeBag();
-            GetComponent<movement>().setSpeed(Mathf.Max(0, originalSpeed - bagSize * slowAmount));
+            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
             controller.coinGathered();
         }
         
@@ -155,7 +158,7 @@ public class burglarLogic : MonoBehaviour {
             Vector3 scale = transform.GetChild(0).transform.localScale;
             float factor = 0.05f;
             transform.GetChild(0).transform.localScale = new Vector3(scale.x - factor, scale.y - factor, scale.z - factor);
-            GetComponent<movement>().setSpeed(Mathf.Max(0, originalSpeed - bagSize * slowAmount));
+            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
             Instantiate(coin, transform.position, transform.rotation);
             controller.coinDropped();
         }
