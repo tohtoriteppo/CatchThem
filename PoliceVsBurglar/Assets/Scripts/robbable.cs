@@ -8,6 +8,8 @@ public class robbable : MonoBehaviour {
     public int robAmount = 10;
     public GameObject coinsLeft;
 
+    private int fillCounter = 0;
+    private int bankRefillTime = 600;
     private Vector3 screenPos;
     // Use this for initialization
     void Start () {
@@ -15,12 +17,19 @@ public class robbable : MonoBehaviour {
         coinsLeft = Instantiate(coinsLeft, GameObject.FindGameObjectWithTag("canvas").transform) as GameObject;
         coinsLeft.GetComponent<Text>().text = robAmount.ToString();
         coinsLeft.transform.position = screenPos;
+        bankRefillTime = Camera.main.GetComponent<gameController>().bankRefillTime;
 
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
+        fillCounter++;
+        if(fillCounter> bankRefillTime)
+        {
+            robAmount++;
+            fillCounter = 0;
+            updateValue();
+        }
 	}
     public void updateValue()
     {

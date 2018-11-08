@@ -11,6 +11,7 @@ TagManager:
   - coin
   - spawnLocation
   - canvas
+  - recharge
   layers:
   - Default
   - TransparentFX
