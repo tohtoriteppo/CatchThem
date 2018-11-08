@@ -2007,7 +2007,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091a578c31b8d0e4886738a8ac921028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 1064960371863244, guid: 0883556a4fa5a3849aae8df5bb078aa4, type: 2}
+  bullet: {fileID: 1031866535810456, guid: 3401201193b7af847b901fce72cca159, type: 2}
   rechargeSliderPrefab: {fileID: 1342713886069854, guid: 8e0a46e1fd1a2d245814578d206e8b36,
     type: 2}
 --- !u!1 &709738273
@@ -2712,7 +2712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5685,7 +5685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091a578c31b8d0e4886738a8ac921028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 1064960371863244, guid: 0883556a4fa5a3849aae8df5bb078aa4, type: 2}
+  bullet: {fileID: 1031866535810456, guid: 3401201193b7af847b901fce72cca159, type: 2}
   rechargeSliderPrefab: {fileID: 1342713886069854, guid: 8e0a46e1fd1a2d245814578d206e8b36,
     type: 2}
 --- !u!54 &1841761022
@@ -6653,7 +6653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
