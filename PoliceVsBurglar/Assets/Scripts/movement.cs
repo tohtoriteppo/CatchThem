@@ -7,9 +7,12 @@ public class movement : MonoBehaviour {
     public bool isPolice;
     private float speed = 0.1f;
     private int playerNum;
-	// Use this for initialization
-	void Start () {
+    //for Animator
+    private Animator characterAnimator;
+    // Use this for initialization
+    void Start () {
         playerNum = int.Parse(name.Substring(6, 1));
+        characterAnimator = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -19,6 +22,15 @@ public class movement : MonoBehaviour {
             new Vector3(transform.position.x + Input.GetAxis("p"+playerNum.ToString()+"_joystick_horizontal") * speed, 
             transform.position.y,
             transform.position.z + Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical") * speed);
+
+        //For animator
+        //idle
+        if((Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal"))==0 && (Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical")) == 0){
+                characterAnimator.SetBool("StartRun", false);
+        }
+        else{
+            characterAnimator.SetBool("StartRun", true);
+        }
 
     }
 
