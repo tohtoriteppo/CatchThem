@@ -26,8 +26,12 @@ public class movement : MonoBehaviour {
         //For animator
         //idle
         if((Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal"))==0 && (Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical")) == 0){
-                characterAnimator.SetBool("Run", false);
+                characterAnimator.SetBool("StartRun", false);
         }
+        else{
+            characterAnimator.SetBool("StartRun", true);
+        }
+
     }
 
     public void setSpeed(float speedToSet)
