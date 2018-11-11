@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scene/Cyber_P 1.unity
+- path: Assets/Scene/TeoLevel.unity
   isLoaded: 1
   isActive: 1
