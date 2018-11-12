@@ -20,8 +20,11 @@ public class burglarLogic : MonoBehaviour {
     private Vector3 startPosition;
     private Vector3 deadPosition;
     private Vector3 originalScale;
+    private Vector3 lastPos;
+    private Vector3 direction;
     private gameController controller;
-   
+    private GameObject teleportObject;
+
 
     // Use this for initialization
     void Start () {
@@ -33,6 +36,7 @@ public class burglarLogic : MonoBehaviour {
         startPosition = transform.position;
         deadPosition = new Vector3(1000, 1000, 1000);
         robbableObjects = new List<GameObject>();
+        teleportObject = null;
     }
 	
 	// Update is called once per frame
@@ -48,6 +52,12 @@ public class burglarLogic : MonoBehaviour {
         }
         else
         {
+            Vector3 newDir = (transform.position - lastPos).normalized;
+            if (newDir != Vector3.zero)
+            {
+                direction = newDir;
+            }
+            lastPos = transform.position;
             //if there is an object to rob or pick up
             if (robbableObjects.Count > 0)
             {
@@ -61,6 +71,15 @@ public class burglarLogic : MonoBehaviour {
             {
                 dropCoin();
             }
+            //if teleport
+            if(teleportObject != null)
+            {
+                if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
+                {
+                    teleport();
+                }
+            }
+            
         }
         
         
@@ -77,6 +96,10 @@ public class burglarLogic : MonoBehaviour {
         {
             robbableObjects.Add(other.gameObject);
         }
+        if (other.tag == "teleport")
+        {
+            teleportObject = other.gameObject;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -89,11 +112,15 @@ public class burglarLogic : MonoBehaviour {
         {
             robbableObjects.Remove(other.gameObject);
         }
+        if (other.tag == "teleport")
+        {
+            teleportObject = null;
+        }
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.collider.tag == "police")
+        if (other.collider.tag == "police" || other.collider.tag == "bullet")
         {
             if(other.gameObject.name.Substring(0, 6) == "bullet")
             {
@@ -101,6 +128,7 @@ public class burglarLogic : MonoBehaviour {
             }
             Die();
         }
+        
     }
 
     public void Die()
@@ -127,41 +155,64 @@ public class burglarLogic : MonoBehaviour {
 
     private void rob()
     {
-        if (robbableObjects[0].name.Substring(0,4) == "coin")
+        int index = 0;
+        if (robbableObjects[0].name.Substring(0, 3) == "rob")
+        {
+            if (robbableObjects[0].gameObject.GetComponent<robbable>().robAmount > 0)
+            {
+                bagSize++;
+                robbableObjects[0].gameObject.GetComponent<robbable>().robAmount--;
+                robbableObjects[0].gameObject.GetComponent<robbable>().updateValue();
+                Vector3 scale = transform.GetChild(0).transform.localScale;
+                reSizeBag();
+                GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+                controller.coinGathered();
+            }
+            else
+            {
+                index++;
+            }
+        }
+        if (robbableObjects[index].name.Substring(0, 4) == "coin")
         {
             bagSize++;
             Vector3 scale = transform.GetChild(0).transform.localScale;
             reSizeBag();
             GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
-            GameObject toDestroy = robbableObjects[0];
+            GameObject toDestroy = robbableObjects[index];
             robbableObjects.Remove(toDestroy);
             Destroy(toDestroy);
             controller.coinGathered();
         }
-        else if (robbableObjects[0].gameObject.GetComponent<robbable>().robAmount > 0)
-        {
-            bagSize++;
-            robbableObjects[0].gameObject.GetComponent<robbable>().robAmount--;
-            robbableObjects[0].gameObject.GetComponent<robbable>().updateValue();
-            Vector3 scale = transform.GetChild(0).transform.localScale;
-            reSizeBag();
-            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
-            controller.coinGathered();
-        }
-        
+
+
     } 
     private void dropCoin()
     {
         if (bagSize > 0)
         {
             bagSize--;
-            Vector3 scale = transform.GetChild(0).transform.localScale;
-            float factor = 0.05f;
-            transform.GetChild(0).transform.localScale = new Vector3(scale.x - factor, scale.y - factor, scale.z - factor);
+            reSizeBag();
             GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
-            Instantiate(coin, transform.position, transform.rotation);
+            Instantiate(coin, transform.position - direction, transform.rotation);
             controller.coinDropped();
         }
+    }
+
+    private bool pay(int howMuch)
+    {
+        if (bagSize >= howMuch)
+        {
+            for(int i = 0; i < howMuch; i++)
+            {
+                bagSize--;
+                reSizeBag();
+                GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+                controller.coinDropped();
+            }
+            return true;
+        }
+        return false;
     }
 
     private void reSizeBag()
@@ -170,5 +221,15 @@ public class burglarLogic : MonoBehaviour {
             originalScale.x + bagScaleFactor * bagSize, 
             originalScale.y + bagScaleFactor * bagSize, 
             originalScale.z + bagScaleFactor * bagSize);
+    }
+
+    private void teleport()
+    {
+        
+        if (pay(2))
+        {
+            transform.position = teleportObject.GetComponent<phoneBoothLogic>().targetPhoneBooth.transform.position;
+        }
+          
     }
 }

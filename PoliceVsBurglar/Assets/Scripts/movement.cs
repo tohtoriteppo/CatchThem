@@ -34,7 +34,8 @@ public class movement : MonoBehaviour {
 
     }
 
-    public void setSpeed(float speedToSet)
+
+public void setSpeed(float speedToSet)
     {
         speed = speedToSet;
     }

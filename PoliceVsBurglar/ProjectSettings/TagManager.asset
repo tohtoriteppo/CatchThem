@@ -12,6 +12,9 @@ TagManager:
   - spawnLocation
   - canvas
   - recharge
+  - teleport
+  - coinHitBox
+  - bullet
   layers:
   - Default
   - TransparentFX
