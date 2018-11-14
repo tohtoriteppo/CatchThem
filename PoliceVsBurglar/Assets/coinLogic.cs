@@ -4,31 +4,30 @@ using UnityEngine;
 
 public class coinLogic : MonoBehaviour {
 
-    private List<GameObject> otherCoins;
-
+    private int hitBoxCounter;
 	// Use this for initialization
 	void Start () {
-		
-	}
+        hitBoxCounter = Camera.main.GetComponent<gameController>().coinBlockTime;
+        GameObject[] burglars = GameObject.FindGameObjectsWithTag("burglar");
+        GameObject[] police = GameObject.FindGameObjectsWithTag("police");
+        foreach(GameObject obj in burglars)
+        {
+            Physics.IgnoreCollision(obj.GetComponent<Collider>(), GetComponent<Collider>());
+        }
+        foreach (GameObject obj in police)
+        {
+            Physics.IgnoreCollision(obj.GetComponent<Collider>(), GetComponent<Collider>());
+        }
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
+        hitBoxCounter--;
+        if(hitBoxCounter <= 0)
+        {
+            Destroy(gameObject);
+        }
 	}
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "coin")
-        {
-            //robbableObjects.Add(other.gameObject);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "coin")
-        {
-            //robbableObjects.Remove(other.gameObject);
-        }
-    }
 
 }

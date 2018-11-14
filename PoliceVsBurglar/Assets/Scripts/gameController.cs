@@ -17,6 +17,7 @@ public class gameController : MonoBehaviour {
     public int chargeTimePerBullet;
     public int bulletAmount;
     public int bankRefillTime;
+    public int coinBlockTime;
 
     public GameObject winText;
     public GameObject timeSlider;
