@@ -3,7 +3,7 @@
 Shader "Custom/OutlineShader" {
 		Properties{
 			_MainTex("Albedo (RGB)", 2D) = "white" {}
-		_OutLineWidth("width", float) = 1.2//定义一个变量
+			_OutLineWidth("width", float) = 1.2//定义一个变量
 		}
 			SubShader{
 
