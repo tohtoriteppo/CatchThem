@@ -8,6 +8,7 @@ public class gameController : MonoBehaviour {
 
     public int goalLimit;
     public int bankCoinsTotal;
+    public int maxCoinsInBank;
     public float burglarSpeed;
     public float slowPerLoot;
     public float policeSpeed;
@@ -56,7 +57,7 @@ public class gameController : MonoBehaviour {
             banks[i].GetComponent<robbable>().robAmount = perBank;
             if(leftovers > 0)
             {
-                banks[i].GetComponent<robbable>().robAmount++;
+                banks[i].GetComponent<robbable>().produceMoney();
                 leftovers--;
             }
             banks[i].GetComponent<robbable>().updateValue();

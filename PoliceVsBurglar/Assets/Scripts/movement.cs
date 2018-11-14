@@ -19,9 +19,9 @@ public class movement : MonoBehaviour {
 	void Update () {
         GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         transform.position = 
-            new Vector3(transform.position.x + Input.GetAxis("p"+playerNum.ToString()+"_joystick_horizontal") * speed, 
+            new Vector3(transform.position.x - Input.GetAxis("p"+playerNum.ToString()+"_joystick_horizontal") * speed, 
             transform.position.y,
-            transform.position.z + Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical") * speed);
+            transform.position.z - Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical") * speed);
 
         //For animator
         //idle
