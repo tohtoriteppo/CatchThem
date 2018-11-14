@@ -194,7 +194,7 @@ public class burglarLogic : MonoBehaviour {
             bagSize--;
             reSizeBag();
             GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
-            Instantiate(coin, transform.position - direction, transform.rotation);
+            Instantiate(coin, transform.position - direction*0.5f, transform.rotation);
             controller.coinDropped();
         }
     }

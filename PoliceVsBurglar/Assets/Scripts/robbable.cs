@@ -8,6 +8,7 @@ public class robbable : MonoBehaviour {
     public int robAmount = 10;
     public GameObject coinsLeft;
 
+    private int maxCoins;
     private int fillCounter = 0;
     private int bankRefillTime = 600;
     private Vector3 screenPos;
@@ -18,6 +19,7 @@ public class robbable : MonoBehaviour {
         coinsLeft.GetComponent<Text>().text = robAmount.ToString();
         coinsLeft.transform.position = screenPos;
         bankRefillTime = Camera.main.GetComponent<gameController>().bankRefillTime;
+        maxCoins = Camera.main.GetComponent<gameController>().maxCoinsInBank;
 
     }
 	
@@ -26,7 +28,7 @@ public class robbable : MonoBehaviour {
         fillCounter++;
         if(fillCounter> bankRefillTime)
         {
-            robAmount++;
+            produceMoney();
             fillCounter = 0;
             updateValue();
         }
@@ -34,5 +36,13 @@ public class robbable : MonoBehaviour {
     public void updateValue()
     {
         coinsLeft.GetComponent<Text>().text = robAmount.ToString();
+    }
+    public void produceMoney()
+    {
+        if(robAmount < maxCoins)
+        {
+            robAmount++;
+        }
+        
     }
 }
