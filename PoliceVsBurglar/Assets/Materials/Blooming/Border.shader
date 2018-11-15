@@ -4,9 +4,10 @@ Shader "Custom/OutlineShader" {
 		Properties{
 			_MainTex("Albedo (RGB)", 2D) = "white" {}
 			_OutLineWidth("width", float) = 1.2//定义一个变量
+			_OutLineColor("OutLineColor",Color) = (1,1,1,1)
 		}
 			SubShader{
-
+//1 pass
 			Pass
 		{
 			CGPROGRAM
@@ -27,6 +28,7 @@ Shader "Custom/OutlineShader" {
 
 
 		float _OutLineWidth;//设置变量
+		fixed4 _OutLineColor;//颜色
 		v2f vert(appdata v)
 		{
 			v2f o;
@@ -44,7 +46,7 @@ Shader "Custom/OutlineShader" {
 		{
 			fixed4 col = tex2D(_MainTex, i.uv);
 		//return col;
-		return fixed4(0, 0, 1, 1);
+		return _OutLineColor;
 		}
 			ENDCG
 		}
