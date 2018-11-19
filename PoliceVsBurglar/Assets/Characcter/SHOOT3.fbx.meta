@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b2b4f0071d925a2479034b43209688ba
+guid: d763073777a3e574bb2e3885a191275d
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -37,11 +37,11 @@ ModelImporter:
     100062: pCube1
     100064: pCube15
     100066: pCube16
-    100068: pCube19
-    100070: pCube2
-    100072: pCube20
-    100074: pCube6
-    100076: //RootNode
+    100068: pCube18
+    100070: pCube19
+    100072: pCube2
+    100074: pCube20
+    100076: pCube6
     100078: polySurface10
     100080: polySurface11
     100082: polySurface13
@@ -69,18 +69,19 @@ ModelImporter:
     100126: pSphere1
     100128: pSphere2
     100130: pSphere4
-    100132: shoulder1
-    100134: transform10
-    100136: transform11
-    100138: transform13
-    100140: transform14
-    100142: transform26
-    100144: transform27
-    100146: transform28
-    100148: transform6
-    100150: transform7
-    100152: transform8
-    100154: transform9
+    100132: //RootNode
+    100134: shoulder1
+    100136: transform10
+    100138: transform11
+    100140: transform13
+    100142: transform14
+    100144: transform26
+    100146: transform27
+    100148: transform28
+    100150: transform6
+    100152: transform7
+    100154: transform8
+    100156: transform9
     400000: control_box16
     400002: control_box18
     400004: front1
@@ -115,11 +116,11 @@ ModelImporter:
     400062: pCube1
     400064: pCube15
     400066: pCube16
-    400068: pCube19
-    400070: pCube2
-    400072: pCube20
-    400074: pCube6
-    400076: //RootNode
+    400068: pCube18
+    400070: pCube19
+    400072: pCube2
+    400074: pCube20
+    400076: pCube6
     400078: polySurface10
     400080: polySurface11
     400082: polySurface13
@@ -147,18 +148,19 @@ ModelImporter:
     400126: pSphere1
     400128: pSphere2
     400130: pSphere4
-    400132: shoulder1
-    400134: transform10
-    400136: transform11
-    400138: transform13
-    400140: transform14
-    400142: transform26
-    400144: transform27
-    400146: transform28
-    400148: transform6
-    400150: transform7
-    400152: transform8
-    400154: transform9
+    400132: //RootNode
+    400134: shoulder1
+    400136: transform10
+    400138: transform11
+    400140: transform13
+    400142: transform14
+    400144: transform26
+    400146: transform27
+    400148: transform28
+    400150: transform6
+    400152: transform7
+    400154: transform8
+    400156: transform9
     2100000: lambert1
     2100002: lambert5
     2100004: lambert6
@@ -176,8 +178,10 @@ ModelImporter:
     2100028: lambert14
     2100030: lambert17
     2100032: Default_Material
-    2300000: polySurface3
-    3300000: polySurface3
+    2300000: pCube18
+    2300002: polySurface3
+    3300000: pCube18
+    3300002: polySurface3
     4300000: polySurface5
     4300002: polySurface6
     4300004: polySurface21
@@ -201,7 +205,8 @@ ModelImporter:
     4300040: polySurface2
     4300042: front1
     4300044: shoulder1
-    7400000: shoot
+    4300046: pCube18
+    7400000: SHOOT
     9500000: //RootNode
     13700000: front1
     13700002: pCube2
@@ -255,7 +260,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: shoot
+      name: SHOOT
       takeName: Take 001
       firstFrame: 30
       lastFrame: 70
@@ -285,7 +290,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 20
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
@@ -305,7 +310,7 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.19999999
+    previousCalculatedGlobalScale: 0.01
     hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60

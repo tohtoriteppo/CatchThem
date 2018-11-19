@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7e8e51620be96c24dad1883ddf88ab10
+guid: 3a46e074850ee0b4c9d4ac4ec5509f11
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -37,11 +37,11 @@ ModelImporter:
     100062: pCube1
     100064: pCube15
     100066: pCube16
-    100068: pCube19
-    100070: pCube2
-    100072: pCube20
-    100074: pCube6
-    100076: //RootNode
+    100068: pCube18
+    100070: pCube19
+    100072: pCube2
+    100074: pCube20
+    100076: pCube6
     100078: polySurface10
     100080: polySurface11
     100082: polySurface13
@@ -69,18 +69,19 @@ ModelImporter:
     100126: pSphere1
     100128: pSphere2
     100130: pSphere4
-    100132: shoulder1
-    100134: transform10
-    100136: transform11
-    100138: transform13
-    100140: transform14
-    100142: transform26
-    100144: transform27
-    100146: transform28
-    100148: transform6
-    100150: transform7
-    100152: transform8
-    100154: transform9
+    100132: //RootNode
+    100134: shoulder1
+    100136: transform10
+    100138: transform11
+    100140: transform13
+    100142: transform14
+    100144: transform26
+    100146: transform27
+    100148: transform28
+    100150: transform6
+    100152: transform7
+    100154: transform8
+    100156: transform9
     400000: control_box16
     400002: control_box18
     400004: front1
@@ -115,11 +116,11 @@ ModelImporter:
     400062: pCube1
     400064: pCube15
     400066: pCube16
-    400068: pCube19
-    400070: pCube2
-    400072: pCube20
-    400074: pCube6
-    400076: //RootNode
+    400068: pCube18
+    400070: pCube19
+    400072: pCube2
+    400074: pCube20
+    400076: pCube6
     400078: polySurface10
     400080: polySurface11
     400082: polySurface13
@@ -147,18 +148,19 @@ ModelImporter:
     400126: pSphere1
     400128: pSphere2
     400130: pSphere4
-    400132: shoulder1
-    400134: transform10
-    400136: transform11
-    400138: transform13
-    400140: transform14
-    400142: transform26
-    400144: transform27
-    400146: transform28
-    400148: transform6
-    400150: transform7
-    400152: transform8
-    400154: transform9
+    400132: //RootNode
+    400134: shoulder1
+    400136: transform10
+    400138: transform11
+    400140: transform13
+    400142: transform14
+    400144: transform26
+    400146: transform27
+    400148: transform28
+    400150: transform6
+    400152: transform7
+    400154: transform8
+    400156: transform9
     2100000: lambert1
     2100002: lambert5
     2100004: lambert6
@@ -176,8 +178,10 @@ ModelImporter:
     2100028: lambert14
     2100030: lambert17
     2100032: Default_Material
-    2300000: polySurface3
-    3300000: polySurface3
+    2300000: pCube18
+    2300002: polySurface3
+    3300000: pCube18
+    3300002: polySurface3
     4300000: polySurface5
     4300002: polySurface6
     4300004: polySurface21
@@ -201,7 +205,8 @@ ModelImporter:
     4300040: polySurface2
     4300042: front1
     4300044: shoulder1
-    7400000: run
+    4300046: pCube18
+    7400000: IDLE
     9500000: //RootNode
     13700000: front1
     13700002: pCube2
@@ -226,97 +231,12 @@ ModelImporter:
     13700040: pSphere2
     13700042: shoulder1
     2186277476908879412: ImportLogs
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Default_Material
-    second: {fileID: 2100000, guid: 5457aaf84c38feb4eb662a7892a7e136, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: blinn1
-    second: {fileID: 2100000, guid: 9b9dfa621683ae644a666feb180efbcd, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: blinn2
-    second: {fileID: 2100000, guid: bed97c5416bc71a4e8ee3ac83319c794, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert1
-    second: {fileID: 2100000, guid: 97d6ac777e8fa314a91600118ff74cc5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert10
-    second: {fileID: 2100000, guid: c54a79e5a11d7294db6153f0a4309f4d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert11
-    second: {fileID: 2100000, guid: a46722c5077998b46a9ac9b55ac1198e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert13
-    second: {fileID: 2100000, guid: b6ea7e71e69f9d14e9ffd47b014095a0, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert14
-    second: {fileID: 2100000, guid: 370f076c53eb7764a85843b42f603fbd, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert15
-    second: {fileID: 2100000, guid: d90c096a1bc593d479607c39e5bd7022, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert16
-    second: {fileID: 2100000, guid: 6f3de5e2923f8c247a74797707022d41, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert17
-    second: {fileID: 2100000, guid: 54b68a8c08394dc4789b1e0382aefc99, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert3
-    second: {fileID: 2100000, guid: 23b81f2aae39d574a943f760bbea24fa, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert4
-    second: {fileID: 2100000, guid: f915923c21f8d9d4684cbf9032041118, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert5
-    second: {fileID: 2100000, guid: 97772333f75852a48936822b5d61c4d6, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert6
-    second: {fileID: 2100000, guid: 093ff6b23c62db642bc7b96d351f54c4, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert7
-    second: {fileID: 2100000, guid: 2647504e0f63a204fa2934e6bf1f4e3c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert9
-    second: {fileID: 2100000, guid: 06e4a0bde69f6554e84999131cfc89e1, type: 2}
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -340,10 +260,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: run
+      name: IDLE
       takeName: Take 001
-      firstFrame: 30
-      lastFrame: 70
+      firstFrame: 1
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -366,11 +286,11 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 20
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
@@ -390,7 +310,7 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.19999999
+    previousCalculatedGlobalScale: 0.01
     hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
