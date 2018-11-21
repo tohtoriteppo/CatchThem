@@ -79,7 +79,7 @@ public class policeLogic : MonoBehaviour {
         }
         if(name == "player4")
         {
-            Debug.Log("ENERGY " + energy);
+            //Debug.Log("ENERGY " + energy);
         }
         if(energy > minEnergy)
         {
