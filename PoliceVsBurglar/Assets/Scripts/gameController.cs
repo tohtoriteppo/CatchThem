@@ -13,12 +13,15 @@ public class gameController : MonoBehaviour {
     public float slowPerLoot;
     public float policeSpeed;
     public float bulletSpeed;
+    public float fatSlowFactor;
     public int bulletCD;
     public int bulletLifeTime;
     public int chargeTimePerBullet;
     public int bulletAmount;
     public int bankRefillTime;
     public int coinBlockTime;
+    public int startEnergy;
+    public int energyPerDonut;
 
     public GameObject winText;
     public GameObject timeSlider;

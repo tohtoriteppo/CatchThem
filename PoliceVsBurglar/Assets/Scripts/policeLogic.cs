@@ -8,16 +8,27 @@ public class policeLogic : MonoBehaviour {
     private int playerNum;
     private Vector3 lastPos;
     private Vector3 direction;
+    private Vector3 originalScale;
     private float bulletSpeed;
+    private float slowAmount;
+    private float originalSpeed;
+    private float minSpeed = 0.01f;
+    private float fatnessFactor;
     private int bulletCounter;
     private int bulletCD;
     private int chargeCounter = 0;
     private int bullets;
     private int maxBullets;
     private int chargeTimePerBullet;
+    private int energyPerDonut;
+    private int energy;
+    private int minEnergy;
+    private float maxScale = 0.5f;
     private gameController controller;
     private GameObject rechargeStation;
     private GameObject rechargeSlider;
+    private GameObject cafeteria;
+
 
     public GameObject bullet;
     public GameObject rechargeSliderPrefab;
@@ -33,7 +44,16 @@ public class policeLogic : MonoBehaviour {
         maxBullets = controller.bulletAmount;
         chargeTimePerBullet = controller.chargeTimePerBullet;
         bullets = maxBullets;
+        energyPerDonut = controller.energyPerDonut;
+        energy = controller.startEnergy;
+        
+        minEnergy = -energy;
         rechargeStation = null;
+        cafeteria = null;
+        originalSpeed = GetComponent<movement>().getSpeed();
+        slowAmount = originalSpeed / energy;
+        originalScale = transform.localScale;
+        fatnessFactor = originalScale.x / energy;
     }
 	
 	// Update is called once per frame
@@ -53,6 +73,27 @@ public class policeLogic : MonoBehaviour {
         {
             recharge();
         }
+        if (cafeteria != null && Input.GetButtonDown("p" + playerNum.ToString() + "_button_x"))
+        {
+            buyDonut();
+        }
+        if(name == "player4")
+        {
+            Debug.Log("ENERGY " + energy);
+        }
+        if(energy > minEnergy)
+        {
+            energy--;
+        }
+        if(energy > 0)
+        {
+            changeShape(true);
+        }
+        else
+        {
+            changeShape(false);
+        }
+
     }
 
     private void shoot()
@@ -62,6 +103,31 @@ public class policeLogic : MonoBehaviour {
         bul.transform.position = bul.transform.position + direction;
         bulletCounter = bulletCD;
         bullets--;     
+    }
+    private void changeShape(bool getFaster)
+    {
+        if(getFaster)
+        {
+            //GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - energy * slowAmount));
+            
+        }
+        else
+        {
+            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed + energy * slowAmount));
+        }
+        transform.localScale = new Vector3(
+                originalScale.x + fatnessFactor * energy * 0.5f,
+                originalScale.y + fatnessFactor * energy * 0.5f,
+                originalScale.z + fatnessFactor * energy * 0.5f);
+
+
+    }
+    private void buyDonut()
+    {
+        //energy = Mathf.Max(energy, 0);
+        energy += energyPerDonut;
+
+        //GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
     }
     private void recharge()
     {
@@ -85,6 +151,10 @@ public class policeLogic : MonoBehaviour {
             rechargeSlider.transform.position = Camera.main.WorldToScreenPoint(other.transform.position);
             
         }
+        if(other.tag == "cafeteria")
+        {
+            cafeteria = other.gameObject;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -97,7 +167,11 @@ public class policeLogic : MonoBehaviour {
             Destroy(rechargeSlider);
             chargeCounter = 0;
         }
-        
+        if (other.tag == "cafeteria")
+        {
+            cafeteria = null;
+        }
+
     }
     
 

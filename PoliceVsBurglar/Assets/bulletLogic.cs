@@ -9,6 +9,11 @@ public class bulletLogic : MonoBehaviour {
 	void Awake () {
         //GetComponent<Rigidbody>().velocity = new Vector3(10, 0, 10);
         lifeCounter = Camera.main.GetComponent<gameController>().bulletLifeTime;
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("river");
+        foreach(GameObject obj in objs)
+        {
+            Physics.IgnoreCollision(obj.GetComponent<Collider>(), GetComponent<Collider>());
+        }
 
     }
 	
