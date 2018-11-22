@@ -39,11 +39,12 @@ GameObject:
   - component: {fileID: 33108394051980448}
   - component: {fileID: 23800186846938716}
   - component: {fileID: 65481545771067362}
-  - component: {fileID: 54044662112405182}
   - component: {fileID: 114726399594182254}
+  - component: {fileID: 54629282833371238}
+  - component: {fileID: 65235719607038024}
   m_Layer: 0
   m_Name: skool
-  m_TagString: Untagged
+  m_TagString: unpassable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,8 +153,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1334883076611130}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 22.403242, y: -0.001380682, z: 0.6800766}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: -14.62, y: 0.2, z: -21.9}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
   - {fileID: 4652447819474648}
@@ -164,7 +165,7 @@ Transform:
   - {fileID: 4904523612089974}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: -180}
 --- !u!4 &4345941044901688
 Transform:
   m_ObjectHideFlags: 1
@@ -420,7 +421,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 1187019a39738394ba0d8b09b2f24d23, type: 3}
+  - {fileID: 2100000, guid: 29bfabdee5bb5a44e8959b7f494f8472, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -524,7 +525,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1952803338677952}
   m_Mesh: {fileID: 4300068, guid: 1187019a39738394ba0d8b09b2f24d23, type: 3}
---- !u!54 &54044662112405182
+--- !u!54 &54629282833371238
 Rigidbody:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -533,12 +534,24 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_AngularDrag: 0
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!65 &65235719607038024
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1334883076611130}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.052060384, y: 0.04768009, z: 0.029414874}
+  m_Center: {x: -0.00063446286, y: -0.0046153734, z: 0.014637002}
 --- !u!65 &65481545771067362
 BoxCollider:
   m_ObjectHideFlags: 1
