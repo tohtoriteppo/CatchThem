@@ -26,10 +26,12 @@ public class movement : MonoBehaviour {
         //For animator
         //idle
         if((Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal"))==0 && (Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical")) == 0){
-                //characterAnimator.SetBool("StartRun", false);
+            //characterAnimator.SetBool("StartRun", false);
+            characterAnimator.Play("IDLE");
         }
         else{
-           // characterAnimator.SetBool("StartRun", true);
+            // characterAnimator.SetBool("StartRun", true);
+            characterAnimator.Play("RUN");
         }
 
     }
