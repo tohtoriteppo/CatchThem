@@ -10,20 +10,21 @@ public class gameController : MonoBehaviour {
     public int bankCoinsTotal;
     public int maxCoinsInBank;
     public float burglarSpeed;
-    public float slowPerLoot;
+    public float slowPerCoin;
     public float policeSpeed;
     public float bulletSpeed;
     public float fatSlowFactor;
     public int bulletCD;
-    public int bulletLifeTime;
-    public int chargeTimePerBullet;
+    public float bulletLifeTime;
+    public float chargeTimePerBullet;
     public int bulletAmount;
-    public int bankRefillTime;
-    public int coinBlockTime;
+    public float bankRefillTime;
+    public float coinBlockTime;
     public int startEnergy;
     public int energyPerDonut;
 
     public GameObject winText;
+    public GameObject timeLeftText;
     public GameObject timeSlider;
     public GameObject coinsText;
 
@@ -71,6 +72,7 @@ public class gameController : MonoBehaviour {
 	void Update () {
         timer = Time.timeSinceLevelLoad;
         timeSlider.GetComponent<Slider>().value = timer / timeLimit;
+        timeLeftText.GetComponent<Text>().text = ((int)(60 - timer)).ToString();
         if (timer > timeLimit)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -79,9 +81,9 @@ public class gameController : MonoBehaviour {
         
 	}
 
-    public void coinGathered()
+    public void coinGathered(int howMany)
     {
-        coinsLeft--;
+        coinsLeft -= howMany;
         if (coinsLeft <= 0)
         {
             winText.SetActive(true);

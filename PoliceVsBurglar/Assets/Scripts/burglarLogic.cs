@@ -7,6 +7,7 @@ public class burglarLogic : MonoBehaviour {
     public int maxBag;
     public GameObject coin;
 
+    private GameObject dumpster;
     private List<GameObject> robbableObjects;
     private float slowAmount;
     private float originalSpeed;
@@ -32,11 +33,12 @@ public class burglarLogic : MonoBehaviour {
         playerNum = int.Parse(name.Substring(6, 1));
         originalSpeed = GetComponent<movement>().getSpeed();
         originalScale = transform.GetChild(0).transform.localScale;
-        slowAmount = controller.slowPerLoot;
+        slowAmount = controller.slowPerCoin;
         startPosition = transform.position;
         deadPosition = new Vector3(1000, 1000, 1000);
         robbableObjects = new List<GameObject>();
         teleportObject = null;
+        dumpster = null;
     }
 	
 	// Update is called once per frame
@@ -79,7 +81,14 @@ public class burglarLogic : MonoBehaviour {
                     teleport();
                 }
             }
-            
+            if (dumpster != null)
+            {
+                if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
+                {
+                    dumpCoin();
+                }
+            }
+
         }
         
         
@@ -92,13 +101,17 @@ public class burglarLogic : MonoBehaviour {
         {
             robbableObjects.Add(other.gameObject);
         }
-        if (other.tag == "coin")
+        else if (other.tag == "coin")
         {
             robbableObjects.Add(other.gameObject);
         }
-        if (other.tag == "teleport")
+        else if (other.tag == "teleport")
         {
             teleportObject = other.gameObject;
+        }
+        else if (other.tag == "dumpster")
+        {
+            dumpster = other.gameObject;
         }
     }
 
@@ -108,13 +121,17 @@ public class burglarLogic : MonoBehaviour {
         {
             robbableObjects.Remove(other.gameObject);
         }
-        if (other.tag == "coin")
+        else if (other.tag == "coin")
         {
             robbableObjects.Remove(other.gameObject);
         }
-        if (other.tag == "teleport")
+        else if (other.tag == "teleport")
         {
             teleportObject = null;
+        }
+        else if (other.tag == "dumpster")
+        {
+            dumpster = null;
         }
     }
 
@@ -140,7 +157,7 @@ public class burglarLogic : MonoBehaviour {
             Debug.Log("WHUUT");
             //Instantiate(coin, transform.position, transform.rotation);
             bagSize--;
-            controller.coinDropped();
+            //controller.coinDropped();
         }
         transform.position = deadPosition;
     }
@@ -166,7 +183,7 @@ public class burglarLogic : MonoBehaviour {
                 Vector3 scale = transform.GetChild(0).transform.localScale;
                 reSizeBag();
                 GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
-                controller.coinGathered();
+                //controller.coinGathered(1);
             }
             else
             {
@@ -182,7 +199,7 @@ public class burglarLogic : MonoBehaviour {
             GameObject toDestroy = robbableObjects[index];
             robbableObjects.Remove(toDestroy);
             Destroy(toDestroy);
-            controller.coinGathered();
+            //controller.coinGathered(1);
         }
 
 
@@ -195,7 +212,7 @@ public class burglarLogic : MonoBehaviour {
             reSizeBag();
             GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
             Instantiate(coin, transform.position - direction*0.5f, transform.rotation);
-            controller.coinDropped();
+            //controller.coinDropped();
         }
     }
 
@@ -208,7 +225,7 @@ public class burglarLogic : MonoBehaviour {
                 bagSize--;
                 reSizeBag();
                 GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
-                controller.coinDropped();
+               //controller.coinDropped();
             }
             return true;
         }
@@ -232,5 +249,18 @@ public class burglarLogic : MonoBehaviour {
             transform.position = new Vector3(phonePos.x, transform.position.y, phonePos.z);
         }
           
+    }
+    private void dumpCoin()
+    {
+        if(bagSize>0)
+        {
+            dumpster.GetComponent<dumpsterLogic>().coinsInStash++;
+            dumpster.GetComponent<dumpsterLogic>().updateValue();
+            bagSize--;
+            reSizeBag();
+            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+
+        }
+
     }
 }

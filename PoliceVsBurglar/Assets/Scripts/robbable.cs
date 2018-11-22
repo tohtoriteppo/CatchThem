@@ -18,7 +18,7 @@ public class robbable : MonoBehaviour {
         coinsLeft = Instantiate(coinsLeft, GameObject.FindGameObjectWithTag("canvas").transform) as GameObject;
         coinsLeft.GetComponent<Text>().text = robAmount.ToString();
         coinsLeft.transform.position = screenPos;
-        bankRefillTime = Camera.main.GetComponent<gameController>().bankRefillTime;
+        bankRefillTime = (int)Camera.main.GetComponent<gameController>().bankRefillTime*60;
         maxCoins = Camera.main.GetComponent<gameController>().maxCoinsInBank;
 
     }

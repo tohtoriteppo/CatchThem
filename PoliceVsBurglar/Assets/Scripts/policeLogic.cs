@@ -32,6 +32,9 @@ public class policeLogic : MonoBehaviour {
 
     public GameObject bullet;
     public GameObject rechargeSliderPrefab;
+
+
+    private bool isFatness = false;
     
 
 
@@ -42,7 +45,7 @@ public class policeLogic : MonoBehaviour {
         bulletSpeed = controller.bulletSpeed;
         bulletCD = controller.bulletCD;
         maxBullets = controller.bulletAmount;
-        chargeTimePerBullet = controller.chargeTimePerBullet;
+        chargeTimePerBullet = (int)controller.chargeTimePerBullet*60;
         bullets = maxBullets;
         energyPerDonut = controller.energyPerDonut;
         energy = controller.startEnergy;
@@ -73,26 +76,30 @@ public class policeLogic : MonoBehaviour {
         {
             recharge();
         }
-        if (cafeteria != null && Input.GetButtonDown("p" + playerNum.ToString() + "_button_x"))
+        if(isFatness)
         {
-            buyDonut();
+            if (cafeteria != null && Input.GetButtonDown("p" + playerNum.ToString() + "_button_x"))
+            {
+                buyDonut();
+            }
+            if (name == "player4")
+            {
+                //Debug.Log("ENERGY " + energy);
+            }
+            if (energy > minEnergy)
+            {
+                energy--;
+            }
+            if (energy > 0)
+            {
+                changeShape(true);
+            }
+            else
+            {
+                changeShape(false);
+            }
         }
-        if(name == "player4")
-        {
-            //Debug.Log("ENERGY " + energy);
-        }
-        if(energy > minEnergy)
-        {
-            energy--;
-        }
-        if(energy > 0)
-        {
-            changeShape(true);
-        }
-        else
-        {
-            changeShape(false);
-        }
+        
 
     }
 
