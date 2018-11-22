@@ -21,7 +21,8 @@ public class policeLogic : MonoBehaviour {
 
     public GameObject bullet;
     public GameObject rechargeSliderPrefab;
-    
+    private Animator characterAnimator;
+
 
 
     // Use this for initialization
@@ -34,6 +35,7 @@ public class policeLogic : MonoBehaviour {
         chargeTimePerBullet = controller.chargeTimePerBullet;
         bullets = maxBullets;
         rechargeStation = null;
+        characterAnimator = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -48,6 +50,7 @@ public class policeLogic : MonoBehaviour {
         if(bulletCounter <= 0 && bullets > 0 && Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
         {
             shoot();
+            characterAnimator.Play("SHOOT");
         }
         if (rechargeStation != null && Input.GetButton("p" + playerNum.ToString() + "_button_a"))
         {

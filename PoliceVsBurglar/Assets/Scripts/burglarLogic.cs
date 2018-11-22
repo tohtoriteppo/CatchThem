@@ -24,6 +24,7 @@ public class burglarLogic : MonoBehaviour {
     private Vector3 direction;
     private gameController controller;
     private GameObject teleportObject;
+    private Animator characterAnimator;
 
 
     // Use this for initialization
@@ -37,6 +38,7 @@ public class burglarLogic : MonoBehaviour {
         deadPosition = new Vector3(1000, 1000, 1000);
         robbableObjects = new List<GameObject>();
         teleportObject = null;
+        characterAnimator = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
