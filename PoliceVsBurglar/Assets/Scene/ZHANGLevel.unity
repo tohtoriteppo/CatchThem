@@ -638,6 +638,15 @@ Prefab:
       propertyPath: m_Name
       value: police
       objectReference: {fileID: 0}
+    - target: {fileID: 1430396001358246, guid: 30e2abc94cf52ab40b4fb699902ba739, type: 2}
+      propertyPath: m_TagString
+      value: police
+      objectReference: {fileID: 0}
+    - target: {fileID: 54669998662759600, guid: 30e2abc94cf52ab40b4fb699902ba739,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 126
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30e2abc94cf52ab40b4fb699902ba739, type: 2}
   m_IsPrefabAsset: 0
@@ -8785,7 +8794,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400078, guid: 8614ed805c37c3140a050a608bb042a6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.936
+      value: -5.906
       objectReference: {fileID: 0}
     - target: {fileID: 400078, guid: 8614ed805c37c3140a050a608bb042a6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9036,7 +9045,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400078, guid: 238d433d76778124282ae303ae342e58, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.903
+      value: -5.906
       objectReference: {fileID: 0}
     - target: {fileID: 400078, guid: 238d433d76778124282ae303ae342e58, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15604,6 +15613,8 @@ GameObject:
   - component: {fileID: 715442975}
   - component: {fileID: 715442977}
   - component: {fileID: 715442976}
+  - component: {fileID: 715442978}
+  - component: {fileID: 715442979}
   m_Layer: 0
   m_Name: Dumpster_2 (1)
   m_TagString: Untagged
@@ -15619,7 +15630,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 715442974}
   m_LocalRotation: {x: -0.6794769, y: 0.19535425, z: 0.19528608, w: 0.6797141}
-  m_LocalPosition: {x: -3.68, y: -0.0075974236, z: -18.534466}
+  m_LocalPosition: {x: -3.011, y: 0.2, z: -18.953}
   m_LocalScale: {x: 100, y: 99.99997, z: 99.99997}
   m_Children: []
   m_Father: {fileID: 1015500386}
@@ -15641,7 +15652,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 788108942816272498f777a872b48415, type: 2}
+  - {fileID: 2100000, guid: a8e9b00c9a8c1334181e15bd166c4ae3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15669,6 +15680,32 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 715442974}
   m_Mesh: {fileID: 4300012, guid: c52cf1b1d63c2ce44a3e2c98262e814c, type: 3}
+--- !u!114 &715442978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 715442974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89447ea42679cd64bb5e1be458d8c8d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shader1: {fileID: 0}
+  shader2: {fileID: 4800000, guid: 3b0c1176dc528e84ba5c68fab93af922, type: 3}
+  target: {fileID: 715442974}
+--- !u!65 &715442979
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 715442974}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.013064932, y: 0.0098856995, z: 0.011841958}
+  m_Center: {x: -0.00005181553, y: -0.00035655475, z: 0.005920979}
 --- !u!4 &716381601 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400078, guid: 0894766f13a24c447b206c03952e9dd3,
@@ -30417,6 +30454,10 @@ Prefab:
     - target: {fileID: 4628895921952194, guid: ca5d7a8f229794241be3be72d7b676eb, type: 2}
       propertyPath: m_LocalPosition.z
       value: 3.0625669e-33
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639702625038210, guid: ca5d7a8f229794241be3be72d7b676eb, type: 2}
+      propertyPath: m_TagString
+      value: burglar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca5d7a8f229794241be3be72d7b676eb, type: 2}
