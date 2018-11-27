@@ -15,7 +15,7 @@ public class WeaponLogic : MonoBehaviour {
     private float bulletSpeed;
     private float width;
     private int rechargeCounter;
-    private int automaticRechargeTimePerBullet = 180;
+    private int automaticRechargeTimePerBullet;
     private int automaticRechargeTimeTotal;
     private int bulletCounter;
     private int bulletCD;
@@ -48,7 +48,7 @@ public class WeaponLogic : MonoBehaviour {
         {
             Shoot();
         }
-        if (rechargeStation != null && Input.GetButton("p" + playerNum.ToString() + "_button_a"))
+        if (rechargeStation != null /*&& Input.GetButton("p" + playerNum.ToString() + "_button_a")*/)
         {
             Recharge();
         }
@@ -86,20 +86,31 @@ public class WeaponLogic : MonoBehaviour {
 
     private void Recharge()
     {
-        Debug.Log("Charging... " + chargeCounter);
-        if (chargeCounter > chargeTimePerBullet && bullets < maxBullets)
+        if(bullets<maxBullets)
         {
-            chargeCounter = 0;
-            AddBullet();
+            Debug.Log("Charging... " + chargeCounter);
+            if (chargeCounter > chargeTimePerBullet && bullets < maxBullets)
+            {
+                chargeCounter = 0;
+                AddBullet();
+                rechargeCounter = Mathf.Min(rechargeCounter + automaticRechargeTimePerBullet, automaticRechargeTimeTotal);
+            }
+            rechargeSlider.GetComponent<Slider>().value = ((float)chargeCounter / (float)chargeTimePerBullet);
+            chargeCounter++;
         }
-        rechargeSlider.GetComponent<Slider>().value = ((float)chargeCounter / (float)chargeTimePerBullet);
-        chargeCounter++;
+        else
+        {
+            Destroy(rechargeSlider);
+        }
+
     }
     private void SetWeapon()
     {
         bulletSpeed = controller.bulletSpeed;
         bulletCD = controller.bulletCD;
         maxBullets = controller.bulletAmount;
+        automaticRechargeTimePerBullet = (int)(controller.automaticRechargeTimePerBullet*60f);
+        Debug.Log("AUTO "+automaticRechargeTimePerBullet);
         automaticRechargeTimeTotal = maxBullets * automaticRechargeTimePerBullet;
         chargeTimePerBullet = (int)controller.chargeTimePerBullet * 60;
         bullets = maxBullets;
@@ -131,8 +142,11 @@ public class WeaponLogic : MonoBehaviour {
         if (other.tag == "recharge")
         {
             rechargeStation = other.gameObject;
-            rechargeSlider = Instantiate(rechargeSliderPrefab, GameObject.FindGameObjectWithTag("canvas").transform);
-            rechargeSlider.transform.position = Camera.main.WorldToScreenPoint(other.transform.position);
+            if(bullets<maxBullets)
+            {
+                rechargeSlider = Instantiate(rechargeSliderPrefab, GameObject.FindGameObjectWithTag("canvas").transform);
+                rechargeSlider.transform.position = Camera.main.WorldToScreenPoint(other.transform.position);
+            }
 
         }
     }
@@ -142,7 +156,10 @@ public class WeaponLogic : MonoBehaviour {
         if (other.tag == "recharge")
         {
             rechargeStation = null;
-            Destroy(rechargeSlider);
+            if (rechargeSlider != null)
+            {
+                Destroy(rechargeSlider);
+            }
             chargeCounter = 0;
         }
     }

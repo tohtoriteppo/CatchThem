@@ -7794,6 +7794,7 @@ MonoBehaviour:
   bulletCD: 0
   bulletLifeTime: 3
   chargeTimePerBullet: 1
+  automaticRechargeTimePerBullet: 5
   bulletAmount: 3
   bankRefillTime: 10
   coinBlockTime: 0.3

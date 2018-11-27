@@ -47,7 +47,7 @@ public class PoliceLogic : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(dumpster!=null && Input.GetButton("p" + playerNum.ToString() + "_button_a"))
+        if(dumpster!=null /*&& Input.GetButton("p" + playerNum.ToString() + "_button_a")*/)
         {
             EmptyDumpster();
         }

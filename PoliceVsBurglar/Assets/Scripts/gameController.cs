@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour {
     public int bulletCD;
     public float bulletLifeTime;
     public float chargeTimePerBullet;
+    public float automaticRechargeTimePerBullet;
     public int bulletAmount;
     public float bankRefillTime;
     public float coinBlockTime;
