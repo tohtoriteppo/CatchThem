@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4443423198113990}
   - component: {fileID: 65004701129243108}
+  - component: {fileID: 95300869355013228}
   m_Layer: 0
   m_Name: dumpsterPrefab (1)
   m_TagString: Untagged
@@ -181,6 +182,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.013064932, y: 0.009885696, z: 0.011841955}
   m_Center: {x: -0.000051808078, y: -0.00035653956, z: 0.0059209773}
+--- !u!95 &95300869355013228
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1109742625846688}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f0224a9fccb4f6e42899659519eff111, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114751000505259076
 MonoBehaviour:
   m_ObjectHideFlags: 1
