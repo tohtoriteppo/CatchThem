@@ -8,7 +8,7 @@ public class bulletLogic : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         //GetComponent<Rigidbody>().velocity = new Vector3(10, 0, 10);
-        lifeCounter = (int)Camera.main.GetComponent<gameController>().bulletLifeTime*60;
+        lifeCounter = (int)Camera.main.GetComponent<GameController>().bulletLifeTime*60;
         GameObject[] objs = GameObject.FindGameObjectsWithTag("river");
         foreach(GameObject obj in objs)
         {

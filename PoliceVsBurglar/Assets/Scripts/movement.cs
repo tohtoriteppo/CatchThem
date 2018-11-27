@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class movement : MonoBehaviour {
+public class Movement : MonoBehaviour {
 
     public bool isPolice;
+
     private float speed = 0.1f;
     private int playerNum;
+    private Vector3 lastPos;
+    private Vector3 direction;
     //for Animator
     private Animator characterAnimator;
     // Use this for initialization
@@ -18,6 +21,13 @@ public class movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        Vector3 newDir = (transform.position - lastPos).normalized;
+        if (newDir != Vector3.zero)
+        {
+            direction = newDir;
+        }
+        transform.rotation = Quaternion.LookRotation(direction);
+        lastPos = transform.position;
         transform.position = 
             new Vector3(transform.position.x - Input.GetAxis("p"+playerNum.ToString()+"_joystick_horizontal") * speed, 
             transform.position.y,
@@ -31,16 +41,22 @@ public class movement : MonoBehaviour {
         else{
            // characterAnimator.SetBool("StartRun", true);
         }
-
+        
     }
 
 
-public void setSpeed(float speedToSet)
+    public void SetSpeed(float speedToSet)
     {
         speed = speedToSet;
     }
-    public float getSpeed()
+    public float GetSpeed()
     {
         return speed;
     }
+    public Vector3 GetDirection()
+    {
+        return direction;
+    }
+
 }
+

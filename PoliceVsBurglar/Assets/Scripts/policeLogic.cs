@@ -3,57 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class policeLogic : MonoBehaviour {
+public class PoliceLogic : MonoBehaviour {
 
-    private int playerNum;
-    private Vector3 lastPos;
-    private Vector3 direction;
+    public GameObject dumpsterSliderPrefab;
+
+
+    private bool isFatness = false;
     private Vector3 originalScale;
-    private float bulletSpeed;
     private float slowAmount;
     private float originalSpeed;
     private float minSpeed = 0.01f;
     private float fatnessFactor;
-    private int bulletCounter;
-    private int bulletCD;
-    private int chargeCounter = 0;
-    private int bullets;
-    private int maxBullets;
-    private int chargeTimePerBullet;
+    private float maxScale = 0.5f;
+    private int playerNum;
     private int energyPerDonut;
     private int energy;
     private int minEnergy;
-    private float maxScale = 0.5f;
-    private gameController controller;
-    private GameObject rechargeStation;
-    private GameObject rechargeSlider;
+    private int dumpsterCounter;
+    private int emptyLimit = 60;
     private GameObject cafeteria;
-
-
-    public GameObject bullet;
-    public GameObject rechargeSliderPrefab;
-
-
-    private bool isFatness = false;
-    
-
+    private GameObject dumpster;
+    private GameObject dumpsterSlider;
+    private Movement movement;
+    private GameController controller;
 
     // Use this for initialization
     void Start () {
         playerNum = int.Parse(name.Substring(6, 1));
-        controller = Camera.main.GetComponent<gameController>();
-        bulletSpeed = controller.bulletSpeed;
-        bulletCD = controller.bulletCD;
-        maxBullets = controller.bulletAmount;
-        chargeTimePerBullet = (int)controller.chargeTimePerBullet*60;
-        bullets = maxBullets;
+        controller = Camera.main.GetComponent<GameController>();
+        movement = GetComponent<Movement>();
         energyPerDonut = controller.energyPerDonut;
         energy = controller.startEnergy;
-        
+        dumpsterCounter = 0;
         minEnergy = -energy;
-        rechargeStation = null;
+        dumpsterSlider = null;
         cafeteria = null;
-        originalSpeed = GetComponent<movement>().getSpeed();
+        originalSpeed = movement.GetSpeed();
         slowAmount = originalSpeed / energy;
         originalScale = transform.localScale;
         fatnessFactor = originalScale.x / energy;
@@ -61,26 +46,16 @@ public class policeLogic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Vector3 newDir = (transform.position - lastPos).normalized;
-        if (newDir != Vector3.zero)
+
+        if(dumpster!=null && Input.GetButton("p" + playerNum.ToString() + "_button_a"))
         {
-            direction = newDir;
-        }
-        lastPos = transform.position;
-        bulletCounter--;
-        if(bulletCounter <= 0 && bullets > 0 && Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
-        {
-            shoot();
-        }
-        if (rechargeStation != null && Input.GetButton("p" + playerNum.ToString() + "_button_a"))
-        {
-            recharge();
+            EmptyDumpster();
         }
         if(isFatness)
         {
             if (cafeteria != null && Input.GetButtonDown("p" + playerNum.ToString() + "_button_x"))
             {
-                buyDonut();
+                BuyDonut();
             }
             if (name == "player4")
             {
@@ -92,26 +67,19 @@ public class policeLogic : MonoBehaviour {
             }
             if (energy > 0)
             {
-                changeShape(true);
+                ChangeShape(true);
             }
             else
             {
-                changeShape(false);
+                ChangeShape(false);
             }
         }
         
 
     }
 
-    private void shoot()
-    {
-        GameObject bul = Instantiate(bullet, transform.position, transform.rotation) as GameObject;
-        bul.GetComponent<Rigidbody>().velocity = direction * bulletSpeed;
-        bul.transform.position = bul.transform.position + direction;
-        bulletCounter = bulletCD;
-        bullets--;     
-    }
-    private void changeShape(bool getFaster)
+    
+    private void ChangeShape(bool getFaster)
     {
         if(getFaster)
         {
@@ -120,7 +88,7 @@ public class policeLogic : MonoBehaviour {
         }
         else
         {
-            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed + energy * slowAmount));
+            movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed + energy * slowAmount));
         }
         transform.localScale = new Vector3(
                 originalScale.x + fatnessFactor * energy * 0.5f,
@@ -129,33 +97,43 @@ public class policeLogic : MonoBehaviour {
 
 
     }
-    private void buyDonut()
+    private void BuyDonut()
     {
         //energy = Mathf.Max(energy, 0);
         energy += energyPerDonut;
 
         //GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
     }
-    private void recharge()
+    private void EmptyDumpster()
     {
-        Debug.Log("Charging... "+chargeCounter);
-        if(chargeCounter > chargeTimePerBullet && bullets < maxBullets)
+        if (dumpster.GetComponent<DumpsterLogic>().coinsInStash > 0)
         {
-            chargeCounter = 0;
-            bullets++;
+            dumpsterCounter++;
+            dumpsterSlider.GetComponent<Slider>().value = ((float)dumpsterCounter / (float)emptyLimit);
+            if (dumpsterCounter > emptyLimit)
+            {
+                dumpster.GetComponent<DumpsterLogic>().EmptyCoin();
+                dumpsterCounter = 0;
+                //ANIM emptycoin
+            }
         }
-        rechargeSlider.GetComponent<Slider>().value = ((float)chargeCounter / (float)chargeTimePerBullet);
-        chargeCounter++;
+        else
+        {
+            Destroy(dumpsterSlider);
+        }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         
-        if(other.tag == "recharge")
+       if(other.tag == "dumpster")
         {
-            Debug.Log("ENTERED");
-            rechargeStation = other.gameObject;
-            rechargeSlider = Instantiate(rechargeSliderPrefab, GameObject.FindGameObjectWithTag("canvas").transform);
-            rechargeSlider.transform.position = Camera.main.WorldToScreenPoint(other.transform.position);
+            dumpster = other.gameObject;
+            if(dumpster.GetComponent<DumpsterLogic>().coinsInStash > 0)
+            {
+                dumpsterSlider = Instantiate(dumpsterSliderPrefab, GameObject.FindGameObjectWithTag("canvas").transform);
+                dumpsterSlider.transform.position = Camera.main.WorldToScreenPoint(other.transform.position);
+            }
             
         }
         if(other.tag == "cafeteria")
@@ -166,13 +144,15 @@ public class policeLogic : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
-        
-        if (other.tag == "recharge")
+
+        if (other.tag == "dumpster")
         {
-            Debug.Log("EXited");
-            rechargeStation = null;
-            Destroy(rechargeSlider);
-            chargeCounter = 0;
+            dumpster = null;
+            dumpsterCounter = 0;
+            if(dumpsterSlider!= null)
+            {
+                Destroy(dumpsterSlider);
+            }
         }
         if (other.tag == "cafeteria")
         {

@@ -64,10 +64,10 @@ public class truckMove : MonoBehaviour {
     private void emptyDumpster()
     {
         
-        coinsCarried += dumpster.GetComponent<dumpsterLogic>().coinsInStash;
-        Camera.main.GetComponent<gameController>().coinGathered(dumpster.GetComponent<dumpsterLogic>().coinsInStash);
-        dumpster.GetComponent<dumpsterLogic>().coinsInStash = 0;
-        dumpster.GetComponent<dumpsterLogic>().updateValue();
+        coinsCarried += dumpster.GetComponent<DumpsterLogic>().coinsInStash;
+        Camera.main.GetComponent<GameController>().CoinGathered(dumpster.GetComponent<DumpsterLogic>().coinsInStash);
+        dumpster.GetComponent<DumpsterLogic>().coinsInStash = 0;
+        dumpster.GetComponent<DumpsterLogic>().UpdateValue();
         
         Debug.Log("ONNN ny " + coinsCarried);
     }

@@ -12,7 +12,7 @@ public class pileBarLogic : MonoBehaviour {
     private float width;
 	// Use this for initialization
 	void Start () {
-        maxAmount = 5;
+        maxAmount = 3;
         width = GetComponent<RectTransform>().sizeDelta.x;
         float widthPerOne = width / maxAmount;
         for(int i = 0; i < maxAmount; i++)
@@ -20,8 +20,8 @@ public class pileBarLogic : MonoBehaviour {
             GameObject obj = Instantiate(partition,transform) as GameObject;
             //PanelSpacerRectTransform.offsetMin = new Vector2(0, 0); new Vector2(left, bottom);
             //PanelSpacerRectTransform.offsetMax = new Vector2(-360, -0); new Vector2(-right, -top);
-            GetComponent<RectTransform>().offsetMin = new Vector2(i* widthPerOne, 15); // left,bottom
-            GetComponent<RectTransform>().offsetMax = new Vector2((maxAmount-i) * widthPerOne, 0); // right,top
+            obj.GetComponent<RectTransform>().offsetMin = new Vector2(i* widthPerOne, 15); // left,bottom
+            obj.GetComponent<RectTransform>().offsetMax = new Vector2(-(maxAmount-i-1) * widthPerOne, 0); // right,top
             partitions.Add(obj);
         }
 	}
@@ -32,6 +32,10 @@ public class pileBarLogic : MonoBehaviour {
 	}
 
     public void addOne()
+    {
+
+    }
+    public void removeBullet()
     {
 
     }

@@ -7,7 +7,7 @@ public class coinLogic : MonoBehaviour {
     private int hitBoxCounter;
 	// Use this for initialization
 	void Start () {
-        hitBoxCounter = (int)Camera.main.GetComponent<gameController>().coinBlockTime*60;
+        hitBoxCounter = (int)Camera.main.GetComponent<GameController>().coinBlockTime*60;
         GameObject[] burglars = GameObject.FindGameObjectsWithTag("burglar");
         GameObject[] police = GameObject.FindGameObjectsWithTag("police");
         foreach(GameObject obj in burglars)

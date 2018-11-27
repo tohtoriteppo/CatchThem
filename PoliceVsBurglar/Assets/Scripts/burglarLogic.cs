@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class burglarLogic : MonoBehaviour {
+public class BurglarLogic : MonoBehaviour {
 
     public int maxBag;
     public GameObject coin;
+    public GameObject bagUI;
+    public GameObject bagPartition;
 
     private GameObject dumpster;
     private List<GameObject> robbableObjects;
@@ -23,15 +25,17 @@ public class burglarLogic : MonoBehaviour {
     private Vector3 originalScale;
     private Vector3 lastPos;
     private Vector3 direction;
-    private gameController controller;
+    private Movement movement;
+    private GameController controller;
     private GameObject teleportObject;
 
 
     // Use this for initialization
     void Start () {
-        controller = Camera.main.GetComponent<gameController>();
+        controller = Camera.main.GetComponent<GameController>();
+        movement = GetComponent<Movement>();
         playerNum = int.Parse(name.Substring(6, 1));
-        originalSpeed = GetComponent<movement>().getSpeed();
+        originalSpeed = movement.GetSpeed();
         originalScale = transform.GetChild(0).transform.localScale;
         slowAmount = controller.slowPerCoin;
         startPosition = transform.position;
@@ -39,6 +43,7 @@ public class burglarLogic : MonoBehaviour {
         robbableObjects = new List<GameObject>();
         teleportObject = null;
         dumpster = null;
+        setBagUI();
     }
 	
 	// Update is called once per frame
@@ -49,12 +54,14 @@ public class burglarLogic : MonoBehaviour {
             deathCounter++;
             if(deathCounter > respawnLimit)
             {
-                respawn();
+                Respawn();
             }
         }
         else
         {
             Vector3 newDir = (transform.position - lastPos).normalized;
+            Vector3 pos = new Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider>().size.y, transform.position.z);
+            bagUI.transform.position = Camera.main.WorldToScreenPoint(pos);
             if (newDir != Vector3.zero)
             {
                 direction = newDir;
@@ -65,27 +72,27 @@ public class burglarLogic : MonoBehaviour {
             {
                 if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
                 {
-                    rob();
+                    Rob();
                 }
             }
             //drop coin
             if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_a"))
             {
-                dropCoin();
+                DropCoin();
             }
             //if teleport
             if(teleportObject != null)
             {
                 if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
                 {
-                    teleport();
+                    Teleport();
                 }
             }
             if (dumpster != null)
             {
                 if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
                 {
-                    dumpCoin();
+                    DumpCoin();
                 }
             }
 
@@ -150,81 +157,94 @@ public class burglarLogic : MonoBehaviour {
 
     public void Die()
     {
+        bagUI.SetActive(false);
         deathCounter = 0;
         dead = true;
         while(bagSize > 0)
         {
             Debug.Log("WHUUT");
             //Instantiate(coin, transform.position, transform.rotation);
-            bagSize--;
+           decreaseBag();
             //controller.coinDropped();
         }
         transform.position = deadPosition;
     }
     
-    private void respawn()
+    private void Respawn()
     {
+        bagUI.SetActive(true);
         transform.position = controller.getSpawnPoint();
-        GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+        movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
         dead = false;
-        reSizeBag();
+        ReSizeBag();
     }
-
-    private void rob()
+    private void incrementBag()
     {
-        int index = 0;
-        if (robbableObjects[0].name.Substring(0, 3) == "rob")
+        bagUI.transform.GetChild(bagSize).gameObject.SetActive(true);
+        bagSize++;
+        ReSizeBag();
+    }
+    private void decreaseBag()
+    {
+        bagSize--;
+        bagUI.transform.GetChild(bagSize).gameObject.SetActive(false);
+        ReSizeBag();
+    }
+    private void Rob()
+    {
+        if(bagSize<maxBag)
         {
-            if (robbableObjects[0].gameObject.GetComponent<robbable>().robAmount > 0)
+            int index = 0;
+            if (robbableObjects[0].name.Substring(0, 3) == "rob")
             {
-                bagSize++;
-                robbableObjects[0].gameObject.GetComponent<robbable>().robAmount--;
-                robbableObjects[0].gameObject.GetComponent<robbable>().updateValue();
+                if (robbableObjects[0].gameObject.GetComponent<Robbable>().robAmount > 0)
+                {
+                    incrementBag();
+                    robbableObjects[0].gameObject.GetComponent<Robbable>().Rob();
+                    robbableObjects[0].gameObject.GetComponent<Robbable>().UpdateValue();
+                    Vector3 scale = transform.GetChild(0).transform.localScale;
+                    movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+                    //controller.coinGathered(1);
+                }
+                else
+                {
+                    index++;
+                }
+            }
+            if (robbableObjects[index].name.Substring(0, 4) == "coin")
+            {
+                incrementBag();
                 Vector3 scale = transform.GetChild(0).transform.localScale;
-                reSizeBag();
-                GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+                movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+                GameObject toDestroy = robbableObjects[index];
+                robbableObjects.Remove(toDestroy);
+                Destroy(toDestroy);
                 //controller.coinGathered(1);
             }
-            else
-            {
-                index++;
-            }
         }
-        if (robbableObjects[index].name.Substring(0, 4) == "coin")
-        {
-            bagSize++;
-            Vector3 scale = transform.GetChild(0).transform.localScale;
-            reSizeBag();
-            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
-            GameObject toDestroy = robbableObjects[index];
-            robbableObjects.Remove(toDestroy);
-            Destroy(toDestroy);
-            //controller.coinGathered(1);
-        }
+        
 
 
     } 
-    private void dropCoin()
+    private void DropCoin()
     {
         if (bagSize > 0)
         {
-            bagSize--;
-            reSizeBag();
-            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+            decreaseBag();
+            movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
             Instantiate(coin, transform.position - direction*0.5f, transform.rotation);
             //controller.coinDropped();
         }
     }
 
-    private bool pay(int howMuch)
+    private bool Pay(int howMuch)
     {
         if (bagSize >= howMuch)
         {
             for(int i = 0; i < howMuch; i++)
             {
-                bagSize--;
-                reSizeBag();
-                GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+                decreaseBag();
+                movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
                //controller.coinDropped();
             }
             return true;
@@ -232,7 +252,7 @@ public class burglarLogic : MonoBehaviour {
         return false;
     }
 
-    private void reSizeBag()
+    private void ReSizeBag()
     {
         transform.GetChild(0).transform.localScale = new Vector3(
             originalScale.x + bagScaleFactor * bagSize, 
@@ -240,27 +260,49 @@ public class burglarLogic : MonoBehaviour {
             originalScale.z + bagScaleFactor * bagSize);
     }
 
-    private void teleport()
+    private void Teleport()
     {
         
-        if (pay(2))
+        if (Pay(2))
         {
             Vector3 phonePos = teleportObject.GetComponent<phoneBoothLogic>().targetPhoneBooth.transform.position;
             transform.position = new Vector3(phonePos.x, transform.position.y, phonePos.z);
         }
           
     }
-    private void dumpCoin()
+    private void DumpCoin()
     {
         if(bagSize>0)
         {
-            dumpster.GetComponent<dumpsterLogic>().coinsInStash++;
-            dumpster.GetComponent<dumpsterLogic>().updateValue();
-            bagSize--;
-            reSizeBag();
-            GetComponent<movement>().setSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+            dumpster.GetComponent<DumpsterLogic>().coinsInStash++;
+            dumpster.GetComponent<DumpsterLogic>().UpdateValue();
+            decreaseBag();
+            movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
 
         }
 
+    }
+
+    private void setBagUI()
+    {
+        bagUI = Instantiate(bagUI, GameObject.FindGameObjectWithTag("canvas").transform);
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider>().size.y, transform.position.z);
+        bagUI.transform.position = Camera.main.WorldToScreenPoint(pos);
+        //bulletBar = weaponUI.transform.GetChild(0).gameObject;
+        float width = bagUI.GetComponent<RectTransform>().sizeDelta.x;
+        float widthPerOne = width / maxBag;
+
+        for (int i = 0; i < maxBag; i++)
+        {
+            GameObject obj = Instantiate(bagPartition, bagUI.transform) as GameObject;
+            //PanelSpacerRectTransform.offsetMin = new Vector2(0, 0); new Vector2(left, bottom);
+            //PanelSpacerRectTransform.offsetMax = new Vector2(-360, -0); new Vector2(-right, -top);
+            obj.GetComponent<RectTransform>().offsetMin = new Vector2(i * widthPerOne, 0); // left,bottom
+            obj.GetComponent<RectTransform>().offsetMax = new Vector2(-(maxBag - i - 1) * widthPerOne, 0); // right,top
+            if (i >= bagSize)
+            {
+                obj.SetActive(false);
+            }
+        }
     }
 }

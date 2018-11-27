@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class gameController : MonoBehaviour {
+public class GameController : MonoBehaviour {
 
     public int goalLimit;
     public int bankCoinsTotal;
@@ -41,16 +41,16 @@ public class gameController : MonoBehaviour {
         GameObject[] burglars = GameObject.FindGameObjectsWithTag("burglar");
         foreach(GameObject obj in burglars)
         {
-            obj.GetComponent<movement>().setSpeed(burglarSpeed);
+            obj.GetComponent<Movement>().SetSpeed(burglarSpeed);
         }
         GameObject[] police = GameObject.FindGameObjectsWithTag("police");
         Debug.Log("police " + police.Length);
         foreach (GameObject obj in police)
         {
-            obj.GetComponent<movement>().setSpeed(policeSpeed);
+            obj.GetComponent<Movement>().SetSpeed(policeSpeed);
         }
-        coinsLeft = goalLimit;
-        coinsText.GetComponent<Text>().text = coinsLeft.ToString();
+        coinsLeft = 0;
+        coinsText.GetComponent<Text>().text = coinsLeft.ToString() + "/" + goalLimit.ToString();
         spawnPoints = GameObject.FindGameObjectsWithTag("spawnLocation");
         GameObject[] banks = GameObject.FindGameObjectsWithTag("robbable");
         int perBank = bankCoinsTotal / banks.Length;
@@ -58,13 +58,13 @@ public class gameController : MonoBehaviour {
         for (int i = 0; i < banks.Length; i++)
         {
 
-            banks[i].GetComponent<robbable>().robAmount = perBank;
+            banks[i].GetComponent<Robbable>().robAmount = perBank;
             if(leftovers > 0)
             {
-                banks[i].GetComponent<robbable>().produceMoney();
+                banks[i].GetComponent<Robbable>().ProduceMoney();
                 leftovers--;
             }
-            banks[i].GetComponent<robbable>().updateValue();
+            banks[i].GetComponent<Robbable>().UpdateValue();
         }
     }
 	
@@ -72,7 +72,7 @@ public class gameController : MonoBehaviour {
 	void Update () {
         timer = Time.timeSinceLevelLoad;
         timeSlider.GetComponent<Slider>().value = timer / timeLimit;
-        timeLeftText.GetComponent<Text>().text = ((int)(60 - timer)).ToString();
+        timeLeftText.GetComponent<Text>().text = ((int)(60 - timer)+1).ToString();
         if (timer > timeLimit)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -81,20 +81,20 @@ public class gameController : MonoBehaviour {
         
 	}
 
-    public void coinGathered(int howMany)
+    public void CoinGathered(int howMany)
     {
-        coinsLeft -= howMany;
-        if (coinsLeft <= 0)
+        coinsLeft += howMany;
+        if (coinsLeft >= goalLimit)
         {
             winText.SetActive(true);
         }
-        coinsText.GetComponent<Text>().text = coinsLeft.ToString();
+        coinsText.GetComponent<Text>().text = coinsLeft.ToString()+"/"+goalLimit.ToString();
     }
 
-    public void coinDropped()
+    public void CoinDropped()
     {
         coinsLeft++;
-        coinsText.GetComponent<Text>().text = coinsLeft.ToString();
+        coinsText.GetComponent<Text>().text = coinsLeft.ToString() + "/" + goalLimit.ToString();
     }
     public Vector3 getSpawnPoint()
     {

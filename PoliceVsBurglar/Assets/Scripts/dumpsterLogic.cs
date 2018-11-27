@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class dumpsterLogic : MonoBehaviour {
+public class DumpsterLogic : MonoBehaviour {
 
     public int coinsInStash = 10;
     public GameObject coinText;
@@ -31,7 +31,7 @@ public class dumpsterLogic : MonoBehaviour {
         }
 		
 	}
-    public void updateValue()
+    public void UpdateValue()
     {
         if(coinsInStash>0)
         {
@@ -42,5 +42,13 @@ public class dumpsterLogic : MonoBehaviour {
             coin.SetActive(false);
         }
         coinText.GetComponent<Text>().text = coinsInStash.ToString();
+    }
+    public void EmptyCoin()
+    {
+        if (coinsInStash > 0)
+        {
+            coinsInStash--;
+            UpdateValue();
+        }
     }
 }

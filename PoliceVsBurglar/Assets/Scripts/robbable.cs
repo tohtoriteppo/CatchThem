@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class robbable : MonoBehaviour {
+public class Robbable : MonoBehaviour {
 
-    public int robAmount = 10;
+    public int robAmount = 5;
     public GameObject coinsLeft;
+    public GameObject bankUI;
+    public GameObject bankPartition;
 
     private int maxCoins;
     private int fillCounter = 0;
@@ -16,11 +18,12 @@ public class robbable : MonoBehaviour {
     void Start () {
         screenPos = Camera.main.WorldToScreenPoint(transform.position);
         coinsLeft = Instantiate(coinsLeft, GameObject.FindGameObjectWithTag("canvas").transform) as GameObject;
-        coinsLeft.GetComponent<Text>().text = robAmount.ToString();
+        //coinsLeft.GetComponent<Text>().text = robAmount.ToString();
+        coinsLeft.GetComponent<Text>().text = "";
         coinsLeft.transform.position = screenPos;
-        bankRefillTime = (int)Camera.main.GetComponent<gameController>().bankRefillTime*60;
-        maxCoins = Camera.main.GetComponent<gameController>().maxCoinsInBank;
-
+        bankRefillTime = (int)Camera.main.GetComponent<GameController>().bankRefillTime*60;
+        maxCoins = Camera.main.GetComponent<GameController>().maxCoinsInBank;
+        SetBankUI();
     }
 	
 	// Update is called once per frame
@@ -28,21 +31,54 @@ public class robbable : MonoBehaviour {
         fillCounter++;
         if(fillCounter> bankRefillTime)
         {
-            produceMoney();
+            ProduceMoney();
             fillCounter = 0;
-            updateValue();
+            UpdateValue();
         }
 	}
-    public void updateValue()
+    public void UpdateValue()
     {
-        coinsLeft.GetComponent<Text>().text = robAmount.ToString();
+        //coinsLeft.GetComponent<Text>().text = robAmount.ToString();
+        
     }
-    public void produceMoney()
+    public void ProduceMoney()
     {
         if(robAmount < maxCoins)
         {
+            bankUI.transform.GetChild(robAmount).gameObject.SetActive(true);
             robAmount++;
+            
         }
         
+        
+    }
+    public void Rob()
+    {
+        robAmount--;
+        bankUI.transform.GetChild(robAmount).gameObject.SetActive(false);
+        UpdateValue();
+    }
+    private void SetBankUI()
+    {
+        bankUI = Instantiate(bankUI, GameObject.FindGameObjectWithTag("canvas").transform);
+        bankUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+        //bulletBar = weaponUI.transform.GetChild(0).gameObject;
+        float height = bankUI.GetComponent<RectTransform>().sizeDelta.y;
+        float heightPerOne = height / maxCoins;
+
+        for (int i = 0; i < maxCoins; i++)
+        {
+            GameObject obj = Instantiate(bankPartition, bankUI.transform) as GameObject;
+            //PanelSpacerRectTransform.offsetMin = new Vector2(0, 0); new Vector2(left, bottom);
+            //PanelSpacerRectTransform.offsetMax = new Vector2(-360, -0); new Vector2(-right, -top);
+            obj.GetComponent<RectTransform>().offsetMin = new Vector2(0, i * heightPerOne); // left,bottom
+            obj.GetComponent<RectTransform>().offsetMax = new Vector2(0, -(maxCoins - i - 1) * heightPerOne); // right,top
+            if(i>=robAmount)
+            {
+                obj.SetActive(false);
+            }
+        }
+
+
     }
 }
