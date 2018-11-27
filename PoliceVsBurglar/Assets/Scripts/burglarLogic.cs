@@ -263,7 +263,7 @@ public class BurglarLogic : MonoBehaviour {
     private void Teleport()
     {
         
-        if (Pay(2))
+        if (Pay(1))
         {
             Vector3 phonePos = teleportObject.GetComponent<phoneBoothLogic>().targetPhoneBooth.transform.position;
             transform.position = new Vector3(phonePos.x, transform.position.y, phonePos.z);
