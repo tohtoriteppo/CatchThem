@@ -208,6 +208,7 @@ ModelImporter:
     4300046: pCube18
     7400000: win1
     9500000: //RootNode
+    11100000: //RootNode
     13700000: front1
     13700002: pCube2
     13700004: polySurface11
@@ -262,8 +263,8 @@ ModelImporter:
     - serializedVersion: 16
       name: win1
       takeName: Take 001
-      firstFrame: 100
-      lastFrame: 400
+      firstFrame: 200
+      lastFrame: 250
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -332,10 +333,10 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 1
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
