@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/TeoTruck.unity
+- path: Assets/Scene/ZHANGLevel.unity
   isLoaded: 1
   isActive: 1
