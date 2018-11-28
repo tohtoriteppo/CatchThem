@@ -40,7 +40,7 @@ public class truckMove : MonoBehaviour {
             counter--;
             if(counter <= 0)
             {
-                //animator.Play("Trunk_Close");
+                animator.Play("Trunk_close");
                 emptyDumpster();
                 changeTarget();
                 counter = (int)collectTime * 60;
@@ -55,7 +55,7 @@ public class truckMove : MonoBehaviour {
             dumpster = other.gameObject;
             if(Vector3.Distance(dumpster.transform.parent.transform.position,agent.destination)<2.0f)
             {
-                //animator.Play("Trunk_Open");
+                animator.Play("Trunk_Open");
                 //OpenLid();
                 atDestination = true;
             }
