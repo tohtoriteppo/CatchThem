@@ -40,13 +40,13 @@ MonoBehaviour:
   - m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 114565997594224982}
-    m_Duration: 7.033333333333333
+    m_Duration: 3.0166666666666666
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114236850425495810}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
-    m_BlendOutDuration: 1.6333333333333329
+    m_BlendOutDuration: 2.0166666666666666
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -106,16 +106,16 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: CM vcam2
     m_Version: 1
-  - m_Start: 5.4
+  - m_Start: 1
     m_ClipIn: 0
     m_Asset: {fileID: 114410742578604338}
-    m_Duration: 7.816666666666666
+    m_Duration: 6
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114236850425495810}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: 1.6333333333333329
-    m_BlendOutDuration: 1.2166666666666668
+    m_BlendInDuration: 2.0166666666666666
+    m_BlendOutDuration: 2
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -175,15 +175,15 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: CM vcam3
     m_Version: 1
-  - m_Start: 12
+  - m_Start: 5
     m_ClipIn: 0
     m_Asset: {fileID: 114557953549789748}
-    m_Duration: 6.566666666666666
+    m_Duration: 13.56666666666668
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114236850425495810}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: 1.2166666666666668
+    m_BlendInDuration: 2
     m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
