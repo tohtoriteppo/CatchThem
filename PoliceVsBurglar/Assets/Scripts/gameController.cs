@@ -28,6 +28,8 @@ public class GameController : MonoBehaviour {
     public GameObject timeLeftText;
     public GameObject timeSlider;
     public GameObject coinsText;
+    public GameObject goalUI;
+    public GameObject goalPartition;
 
     private int coinsLeft;
     private float timer = 0;
@@ -67,6 +69,7 @@ public class GameController : MonoBehaviour {
             }
             banks[i].GetComponent<Robbable>().UpdateValue();
         }
+        SetGoalUI();
     }
 	
 	// Update is called once per frame
@@ -84,6 +87,10 @@ public class GameController : MonoBehaviour {
 
     public void CoinGathered(int howMany)
     {
+        for(int i = coinsLeft; i<Mathf.Min(coinsLeft+howMany, goalLimit); i++)
+        {
+            goalUI.transform.GetChild(i).gameObject.SetActive(true);
+        }
         coinsLeft += howMany;
         if (coinsLeft >= goalLimit)
         {
@@ -94,11 +101,36 @@ public class GameController : MonoBehaviour {
 
     public void CoinDropped()
     {
-        coinsLeft++;
+        coinsLeft--;
         coinsText.GetComponent<Text>().text = coinsLeft.ToString() + "/" + goalLimit.ToString();
+        goalUI.transform.GetChild(coinsLeft).gameObject.SetActive(true);
     }
     public Vector3 getSpawnPoint()
     {
         return spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position;
+    }
+
+    private void SetGoalUI()
+    {
+        //goalUI = Instantiate(goalUI, GameObject.FindGameObjectWithTag("canvas").transform);
+        //Vector3 pos = new Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider>().size.y, transform.position.z);
+        //goalUI.transform.position = Camera.main.WorldToScreenPoint(pos);
+        //bulletBar = weaponUI.transform.GetChild(0).gameObject;
+        float width = goalUI.GetComponent<RectTransform>().sizeDelta.x;
+        float widthPerOne = width / goalLimit;
+
+        for (int i = 0; i < goalLimit; i++)
+        {
+            GameObject obj = Instantiate(goalPartition, goalUI.transform) as GameObject;
+            //PanelSpacerRectTransform.offsetMin = new Vector2(0, 0); new Vector2(left, bottom);
+            //PanelSpacerRectTransform.offsetMax = new Vector2(-360, -0); new Vector2(-right, -top);
+            int space = 2;
+            obj.GetComponent<RectTransform>().offsetMin = new Vector2(i * widthPerOne+space, 0); // left,bottom
+            obj.GetComponent<RectTransform>().offsetMax = new Vector2(-(goalLimit - i - 1) * widthPerOne, 0); // right,top
+            if (i >= coinsLeft)
+            {
+                obj.SetActive(false);
+            }
+        }
     }
 }

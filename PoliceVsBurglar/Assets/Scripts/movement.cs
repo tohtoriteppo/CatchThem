@@ -5,6 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
 
     public bool isPolice;
+    public GameObject directionLight;
 
     private float speed = 0.1f;
     private int playerNum;
@@ -16,12 +17,14 @@ public class Movement : MonoBehaviour {
     void Start () {
         playerNum = int.Parse(name.Substring(6, 1));
         characterAnimator = GetComponent<Animator>();
+        directionLight = Instantiate(directionLight, transform);
+        directionLight.transform.position = Vector3.zero;
     }
 	
 	// Update is called once per frame
 	void Update () {
         GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        Vector3 newDir = (transform.position - lastPos).normalized;
+        Vector3 newDir = (new Vector3(transform.position.x,0, transform.position.z) - new Vector3(lastPos.x,0,lastPos.z)).normalized;
         if (newDir != Vector3.zero)
         {
             direction = newDir;
@@ -36,10 +39,10 @@ public class Movement : MonoBehaviour {
         //For animator
         //idle
         if ((Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal"))==0 && (Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical")) == 0){
-                //characterAnimator.SetBool("StartRun", false);
+           characterAnimator.Play("IDLE");
         }
         else{
-           // characterAnimator.SetBool("StartRun", true);
+           characterAnimator.Play("RUN");
         }
         
     }

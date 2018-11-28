@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BurglarLogic : MonoBehaviour {
 
@@ -39,7 +40,7 @@ public class BurglarLogic : MonoBehaviour {
         originalScale = transform.GetChild(0).transform.localScale;
         slowAmount = controller.slowPerCoin;
         startPosition = transform.position;
-        deadPosition = new Vector3(1000, 1000, 1000);
+        deadPosition = new Vector3(1000, 0.75f, 1000);
         robbableObjects = new List<GameObject>();
         teleportObject = null;
         dumpster = null;
@@ -49,6 +50,7 @@ public class BurglarLogic : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        
         if (dead)
         {
             deathCounter++;
@@ -56,12 +58,15 @@ public class BurglarLogic : MonoBehaviour {
             {
                 Respawn();
             }
+            
         }
         else
         {
             Vector3 newDir = (transform.position - lastPos).normalized;
-            Vector3 pos = new Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider>().size.y, transform.position.z);
-            bagUI.transform.position = Camera.main.WorldToScreenPoint(pos);
+            bagUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+            Vector2 pos = new Vector2(bagUI.transform.position.x + bagUI.GetComponent<RectTransform>().sizeDelta.x/4, bagUI.transform.position.y + bagUI.GetComponent<RectTransform>().sizeDelta.y*0.7f);
+            bagUI.transform.position = pos;
+
             if (newDir != Vector3.zero)
             {
                 direction = newDir;
@@ -168,26 +173,30 @@ public class BurglarLogic : MonoBehaviour {
             //controller.coinDropped();
         }
         transform.position = deadPosition;
+        transform.rotation = Quaternion.identity;
     }
     
     private void Respawn()
     {
         bagUI.SetActive(true);
         transform.position = controller.getSpawnPoint();
+        Debug.Log("POSSSS " + transform.position);
+        transform.rotation = Quaternion.identity;
+        Debug.Log("POSSSS " + transform.rotation);
         movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
         dead = false;
         ReSizeBag();
     }
     private void incrementBag()
     {
-        bagUI.transform.GetChild(bagSize).gameObject.SetActive(true);
+        //bagUI.transform.GetChild(bagSize).gameObject.SetActive(true);
         bagSize++;
         ReSizeBag();
     }
     private void decreaseBag()
     {
         bagSize--;
-        bagUI.transform.GetChild(bagSize).gameObject.SetActive(false);
+        //bagUI.transform.GetChild(bagSize).gameObject.SetActive(false);
         ReSizeBag();
     }
     private void Rob()
@@ -258,6 +267,7 @@ public class BurglarLogic : MonoBehaviour {
             originalScale.x + bagScaleFactor * bagSize, 
             originalScale.y + bagScaleFactor * bagSize, 
             originalScale.z + bagScaleFactor * bagSize);
+        bagUI.GetComponent<Text>().text = bagSize.ToString();
     }
 
     private void Teleport()
@@ -286,9 +296,12 @@ public class BurglarLogic : MonoBehaviour {
     private void setBagUI()
     {
         bagUI = Instantiate(bagUI, GameObject.FindGameObjectWithTag("canvas").transform);
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider>().size.y, transform.position.z);
-        bagUI.transform.position = Camera.main.WorldToScreenPoint(pos);
+        bagUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+        Vector2 pos = new Vector2(bagUI.transform.position.x + bagUI.GetComponent<RectTransform>().sizeDelta.x, bagUI.transform.position.y + bagUI.GetComponent<RectTransform>().sizeDelta.y*2);
+        bagUI.transform.position = pos;
+        bagUI.GetComponent<Text>().text = bagSize.ToString();
         //bulletBar = weaponUI.transform.GetChild(0).gameObject;
+        /*
         float width = bagUI.GetComponent<RectTransform>().sizeDelta.x;
         float widthPerOne = width / maxBag;
 
@@ -304,5 +317,6 @@ public class BurglarLogic : MonoBehaviour {
                 obj.SetActive(false);
             }
         }
+        */
     }
 }

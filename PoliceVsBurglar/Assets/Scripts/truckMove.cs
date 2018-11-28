@@ -8,21 +8,29 @@ public class truckMove : MonoBehaviour {
     public GameObject checkpointParent;
     public float collectTime;
 
+    private Animator animator;
     private GameObject dumpster;
     private NavMeshAgent agent;
     private int childCount;
     private int counter;
     private int currentTarget = 0;
     private int coinsCarried;
+    private Quaternion lidStartRotation;
+    private Quaternion lidEndRotation;
     public bool atDestination = false;
 
     void Start()
     {
+        lidStartRotation = transform.GetChild(0).rotation;
+        lidEndRotation = lidStartRotation;
+        lidEndRotation *= Quaternion.Euler(90, 0, 0);
+        animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.destination = checkpointParent.transform.GetChild(currentTarget).transform.position;
         childCount = checkpointParent.transform.childCount;
         counter = (int)collectTime*60;
         dumpster = null;
+        //agent.updateUpAxis = false;
     }
 
     private void Update()
@@ -32,6 +40,7 @@ public class truckMove : MonoBehaviour {
             counter--;
             if(counter <= 0)
             {
+                //animator.Play("Trunk_Close");
                 emptyDumpster();
                 changeTarget();
                 counter = (int)collectTime * 60;
@@ -44,9 +53,10 @@ public class truckMove : MonoBehaviour {
         if(other.tag == "dumpster")
         {
             dumpster = other.gameObject;
-            Debug.Log("MIIT* " + dumpster.transform.parent.transform.position + "  " + agent.destination);
             if(Vector3.Distance(dumpster.transform.parent.transform.position,agent.destination)<2.0f)
             {
+                //animator.Play("Trunk_Open");
+                //OpenLid();
                 atDestination = true;
             }
         }
@@ -81,6 +91,12 @@ public class truckMove : MonoBehaviour {
         agent.destination = checkpointParent.transform.GetChild(currentTarget).transform.position;
         atDestination = false;
     }
-
-
+    private void OpenLid()
+    {
+        transform.GetChild(0).rotation = lidStartRotation * Quaternion.Euler(90 / (counter + 1), 0, 0);
+    }
+    private void CloseLid()
+    {
+        transform.GetChild(0).rotation = lidStartRotation * Quaternion.Euler(90 / (counter + 1), 0, 0);
+    }
 }

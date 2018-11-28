@@ -57,10 +57,10 @@ public class WeaponLogic : MonoBehaviour {
     {
         Vector3 pos = new Vector3(transform.position.x, transform.position.y+GetComponent<BoxCollider>().size.y, transform.position.z);
         bulletUI.transform.position = Camera.main.WorldToScreenPoint(pos);
-        bulletUI.transform.position = new Vector3(bulletUI.transform.position.x, bulletUI.transform.position.y + 10);
+        bulletUI.transform.position = new Vector3(bulletUI.transform.position.x, bulletUI.transform.position.y + 12);
         rechargeCounter = Mathf.Min(rechargeCounter+1, automaticRechargeTimeTotal);
         bulletUI.GetComponent<Slider>().value = (float)rechargeCounter / (float)automaticRechargeTimeTotal;
-        if(rechargeCounter == automaticRechargeTimePerBullet*(bullets+1))
+        if(rechargeCounter >= automaticRechargeTimePerBullet*(bullets+1))
         {
             AddBullet();
         }
@@ -88,6 +88,7 @@ public class WeaponLogic : MonoBehaviour {
     {
         if(bullets<maxBullets)
         {
+            /*
             Debug.Log("Charging... " + chargeCounter);
             if (chargeCounter > chargeTimePerBullet && bullets < maxBullets)
             {
@@ -97,6 +98,8 @@ public class WeaponLogic : MonoBehaviour {
             }
             rechargeSlider.GetComponent<Slider>().value = ((float)chargeCounter / (float)chargeTimePerBullet);
             chargeCounter++;
+            */
+            rechargeCounter = Mathf.Min(rechargeCounter + 5, automaticRechargeTimeTotal);
         }
         else
         {
@@ -144,8 +147,8 @@ public class WeaponLogic : MonoBehaviour {
             rechargeStation = other.gameObject;
             if(bullets<maxBullets)
             {
-                rechargeSlider = Instantiate(rechargeSliderPrefab, GameObject.FindGameObjectWithTag("canvas").transform);
-                rechargeSlider.transform.position = Camera.main.WorldToScreenPoint(other.transform.position);
+                //rechargeSlider = Instantiate(rechargeSliderPrefab, GameObject.FindGameObjectWithTag("canvas").transform);
+                //rechargeSlider.transform.position = Camera.main.WorldToScreenPoint(other.transform.position);
             }
 
         }
