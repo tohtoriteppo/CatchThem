@@ -76,7 +76,7 @@ public class GameController : MonoBehaviour {
             banks[i].GetComponent<Robbable>().UpdateValue();
         }
         //startMenuButtons = new List<GameObject>();
-        startMenu.SetActive(true);
+        //startMenu.SetActive(true);
         SetGoalUI();
     }
 	

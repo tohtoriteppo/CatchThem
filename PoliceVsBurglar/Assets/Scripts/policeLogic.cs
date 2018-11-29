@@ -20,7 +20,7 @@ public class PoliceLogic : MonoBehaviour {
     private int energy;
     private int minEnergy;
     private int dumpsterCounter;
-    private int emptyLimit = 60;
+    private int emptyLimit = 150;
     private GameObject cafeteria;
     private GameObject dumpster;
     private GameObject dumpsterSlider;

@@ -17,8 +17,8 @@ public class Movement : MonoBehaviour {
     void Start () {
         playerNum = int.Parse(name.Substring(6, 1));
         characterAnimator = GetComponent<Animator>();
-        directionLight = Instantiate(directionLight, transform);
-        directionLight.transform.position = Vector3.zero;
+        //directionLight = Instantiate(directionLight, transform);
+       // directionLight.transform.position = Vector3.zero;
     }
 	
 	// Update is called once per frame

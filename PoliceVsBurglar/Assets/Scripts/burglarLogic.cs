@@ -20,7 +20,10 @@ public class BurglarLogic : MonoBehaviour {
     private int playerNum;
     private int respawnLimit = 180;
     private int bagSize;
+    private int immortalTime = 120;
+    private int immortalCounter = 0;
     private bool dead = false;
+    private bool immortal = false;
     private Vector3 startPosition;
     private Vector3 deadPosition;
     private Vector3 originalScale;
@@ -62,6 +65,14 @@ public class BurglarLogic : MonoBehaviour {
         }
         else
         {
+            if(immortal)
+            {
+                immortalCounter++;
+                if(immortalCounter>immortalTime)
+                {
+                    immortal = false;
+                }
+            }
             Vector3 newDir = (transform.position - lastPos).normalized;
             bagUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
             Vector2 pos = new Vector2(bagUI.transform.position.x + bagUI.GetComponent<RectTransform>().sizeDelta.x/4, bagUI.transform.position.y + bagUI.GetComponent<RectTransform>().sizeDelta.y*0.7f);
@@ -70,10 +81,11 @@ public class BurglarLogic : MonoBehaviour {
             if (newDir != Vector3.zero)
             {
                 direction = newDir;
+                //okk
             }
             lastPos = transform.position;
             //if there is an object to rob or pick up
-            if (robbableObjects.Count > 0)
+            if (robbableObjects.Count  > 0)
             {
                 if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
                 {
@@ -160,14 +172,18 @@ public class BurglarLogic : MonoBehaviour {
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.collider.tag == "police" || other.collider.tag == "bullet")
+        if(!immortal)
         {
-            if(other.gameObject.name.Substring(0, 6) == "bullet")
+            if (other.collider.tag == "police" || other.collider.tag == "bullet")
             {
-                Destroy(other.gameObject);
+                if (other.gameObject.name.Substring(0, 6) == "bullet")
+                {
+                    Destroy(other.gameObject);
+                }
+                Die();
             }
-            Die();
         }
+        
         
     }
 
@@ -190,11 +206,11 @@ public class BurglarLogic : MonoBehaviour {
     {
         bagUI.SetActive(true);
         transform.position = controller.getSpawnPoint();
-        Debug.Log("POSSSS " + transform.position);
         transform.rotation = Quaternion.identity;
-        Debug.Log("POSSSS " + transform.rotation);
         movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
         dead = false;
+        immortal = true;
+        immortalCounter = 0;
         ReSizeBag();
     }
     private void incrementBag()
