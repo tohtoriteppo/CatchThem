@@ -56,6 +56,7 @@ public class truckMove : MonoBehaviour {
             if(Vector3.Distance(dumpster.transform.parent.transform.position,agent.destination)<2.0f)
             {
                 animator.Play("Trunk_Open");
+                dumpster.GetComponent<DumpsterLogic>().OpenLid();
                 //OpenLid();
                 atDestination = true;
             }
@@ -78,8 +79,7 @@ public class truckMove : MonoBehaviour {
         Camera.main.GetComponent<GameController>().CoinGathered(dumpster.GetComponent<DumpsterLogic>().coinsInStash);
         dumpster.GetComponent<DumpsterLogic>().coinsInStash = 0;
         dumpster.GetComponent<DumpsterLogic>().UpdateValue();
-        
-        Debug.Log("ONNN ny " + coinsCarried);
+        dumpster.GetComponent<DumpsterLogic>().CloseLid();
     }
     private void changeTarget()
     {

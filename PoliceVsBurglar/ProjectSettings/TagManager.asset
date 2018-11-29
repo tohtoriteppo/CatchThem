@@ -18,6 +18,7 @@ TagManager:
   - river
   - cafeteria
   - dumpster
+  - hide
   layers:
   - Default
   - TransparentFX

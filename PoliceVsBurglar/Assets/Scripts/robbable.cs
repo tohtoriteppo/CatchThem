@@ -38,14 +38,14 @@ public class Robbable : MonoBehaviour {
 	}
     public void UpdateValue()
     {
-        //coinsLeft.GetComponent<Text>().text = robAmount.ToString();
+        bankUI.GetComponentInChildren<Text>().text = robAmount.ToString();
         
     }
     public void ProduceMoney()
     {
         if(robAmount < maxCoins)
         {
-            bankUI.transform.GetChild(robAmount).gameObject.SetActive(true);
+            bankUI.transform.GetChild(robAmount+1).gameObject.SetActive(true);
             robAmount++;
             
         }
@@ -55,14 +55,16 @@ public class Robbable : MonoBehaviour {
     public void Rob()
     {
         robAmount--;
-        bankUI.transform.GetChild(robAmount).gameObject.SetActive(false);
+        bankUI.transform.GetChild(robAmount+1).gameObject.SetActive(false);
         UpdateValue();
     }
     private void SetBankUI()
     {
         bankUI = Instantiate(bankUI, GameObject.FindGameObjectWithTag("canvas").transform);
         bankUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+        bankUI.transform.position = new Vector2(bankUI.transform.position.x, bankUI.transform.position.y + 40);
         //bulletBar = weaponUI.transform.GetChild(0).gameObject;
+        /*
         float height = bankUI.GetComponent<RectTransform>().sizeDelta.y;
         float heightPerOne = height / maxCoins;
 
@@ -74,6 +76,21 @@ public class Robbable : MonoBehaviour {
             obj.GetComponent<RectTransform>().offsetMin = new Vector2(0, i * heightPerOne); // left,bottom
             obj.GetComponent<RectTransform>().offsetMax = new Vector2(0, -(maxCoins - i - 1) * heightPerOne); // right,top
             if(i>=robAmount)
+            {
+                obj.SetActive(false);
+            }
+        }
+        */
+        float height = bankUI.GetComponent<RectTransform>().sizeDelta.y;
+        float heightPerOne = 52;
+        for (int i = 0; i < maxCoins; i++)
+        {
+            GameObject obj = Instantiate(bankPartition, bankUI.transform) as GameObject;
+            //PanelSpacerRectTransform.offsetMin = new Vector2(0, 0); new Vector2(left, bottom);
+            //PanelSpacerRectTransform.offsetMax = new Vector2(-360, -0); new Vector2(-right, -top);
+            obj.GetComponent<RectTransform>().offsetMin = new Vector2(0, i * 10); // left,bottom
+            obj.GetComponent<RectTransform>().offsetMax = new Vector2(0, -height+i*10+heightPerOne); // right,top
+            if (i >= robAmount)
             {
                 obj.SetActive(false);
             }

@@ -18,8 +18,14 @@ public class Border_Control : MonoBehaviour {
 	}
     private void OnTriggerEnter(Collider other)
     {
-       
-        if (other.tag.Equals("police")|| other.tag.Equals("burglar"))
+        if(tag=="recharge")
+        {
+            if(other.tag.Equals("police"))
+            {
+                target.GetComponent<Renderer>().material.shader = shader2;
+            }
+        }
+        else if (other.tag.Equals("police")|| other.tag.Equals("burglar"))
         {
             Debug.Log("enter");
             target.GetComponent<Renderer>().material.shader = shader2;

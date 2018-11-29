@@ -30,9 +30,15 @@ public class GameController : MonoBehaviour {
     public GameObject coinsText;
     public GameObject goalUI;
     public GameObject goalPartition;
+    public GameObject startMenu;
+    public GameObject selectionArrow;
+    public List<GameObject> startMenuButtons;
 
+    private int menuSelection;
+    public bool inStartMenu;
     private int coinsLeft;
     private float timer = 0;
+    //private 
     private float timeLimit = 60.0f;
     private GameObject[] spawnPoints;
 	// Use this for initialization
@@ -69,19 +75,48 @@ public class GameController : MonoBehaviour {
             }
             banks[i].GetComponent<Robbable>().UpdateValue();
         }
+        //startMenuButtons = new List<GameObject>();
+        startMenu.SetActive(true);
         SetGoalUI();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        timer = Time.timeSinceLevelLoad;
-        timeSlider.GetComponent<Slider>().value = timer / timeLimit;
-        timeLeftText.GetComponent<Text>().text = ((int)(60 - timer)+1).ToString();
-        if (timer > timeLimit)
+        if(inStartMenu)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            timer = 0;
+            if (Input.GetButtonDown("p1_button_a"))
+            {
+                inStartMenu = false;
+                startMenu.SetActive(false);
+            }
+            float dir = Input.GetAxis("p1_joystick_vertical");
+            //move to play button
+            if (dir>0)
+            {
+                menuSelection = 0;
+                selectionArrow.transform.position = new Vector2(selectionArrow.transform.position.x, startMenuButtons[menuSelection].transform.position.y);
+            }
+            //move to exit button
+            else if(dir<0)
+            {
+                menuSelection = 1;
+                selectionArrow.transform.position = new Vector2(selectionArrow.transform.position.x, startMenuButtons[menuSelection].transform.position.y);
+            }
         }
+        
+        else
+        {
+            
+            timer = Time.timeSinceLevelLoad;
+            timeSlider.GetComponent<Slider>().value = timer / timeLimit;
+            timeLeftText.GetComponent<Text>().text = ((int)(60 - timer) + 1).ToString();
+            if (timer > timeLimit)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                timer = 0;
+            }
+        }
+        
         
 	}
 
@@ -132,5 +167,13 @@ public class GameController : MonoBehaviour {
                 obj.SetActive(false);
             }
         }
+    }
+    public void StartGame()
+    {
+
+    }
+    public void EndGame()
+    {
+
     }
 }

@@ -125,6 +125,12 @@ public class BurglarLogic : MonoBehaviour {
         {
             dumpster = other.gameObject;
         }
+        else if(other.tag == "hide")
+        {
+            Debug.Log("TAG " + transform.GetChild(0).name);
+            transform.GetChild(0).gameObject.SetActive(false);
+            bagUI.SetActive(false);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -144,6 +150,11 @@ public class BurglarLogic : MonoBehaviour {
         else if (other.tag == "dumpster")
         {
             dumpster = null;
+        }
+        else if(other.tag == "hide")
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+            bagUI.SetActive(true);
         }
     }
 
@@ -167,7 +178,6 @@ public class BurglarLogic : MonoBehaviour {
         dead = true;
         while(bagSize > 0)
         {
-            Debug.Log("WHUUT");
             //Instantiate(coin, transform.position, transform.rotation);
            decreaseBag();
             //controller.coinDropped();
