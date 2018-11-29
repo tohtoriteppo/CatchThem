@@ -21,7 +21,7 @@ public class Border_Control : MonoBehaviour {
        
         if (other.tag.Equals("police")|| other.tag.Equals("burglar"))
         {
-            Debug.Log("enter");
+           // Debug.Log("enter");
             target.GetComponent<Renderer>().material.shader = shader2;
         }
     }
@@ -30,7 +30,7 @@ public class Border_Control : MonoBehaviour {
         
         if (other.tag.Equals("police") || other.tag.Equals("burglar"))
         {
-            Debug.Log("exit");
+            //Debug.Log("exit");
             target.GetComponent<Renderer>().material.shader = shader1;
         }
     }

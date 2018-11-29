@@ -18,6 +18,9 @@ TagManager:
   - river
   - cafeteria
   - dumpster
+  - BankUI
+  - DumpsterUI
+  - TrunkUI
   layers:
   - Default
   - TransparentFX
