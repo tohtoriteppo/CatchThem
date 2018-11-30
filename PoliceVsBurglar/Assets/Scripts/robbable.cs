@@ -17,7 +17,7 @@ public class Robbable : MonoBehaviour {
     // Use this for initialization
     void Start () {
         screenPos = Camera.main.WorldToScreenPoint(transform.position);
-        coinsLeft = Instantiate(coinsLeft, GameObject.FindGameObjectWithTag("canvas").transform) as GameObject;
+        coinsLeft = Instantiate(coinsLeft, GameObject.FindGameObjectWithTag("UIContainer").transform) as GameObject;
         //coinsLeft.GetComponent<Text>().text = robAmount.ToString();
         coinsLeft.GetComponent<Text>().text = "";
         coinsLeft.transform.position = screenPos;
@@ -60,7 +60,7 @@ public class Robbable : MonoBehaviour {
     }
     private void SetBankUI()
     {
-        bankUI = Instantiate(bankUI, GameObject.FindGameObjectWithTag("canvas").transform);
+        bankUI = Instantiate(bankUI, GameObject.FindGameObjectWithTag("UIContainer").transform);
         bankUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         bankUI.transform.position = new Vector2(bankUI.transform.position.x, bankUI.transform.position.y + 40);
         //bulletBar = weaponUI.transform.GetChild(0).gameObject;

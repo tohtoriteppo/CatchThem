@@ -17,7 +17,7 @@ public class HideLogic : MonoBehaviour {
     
     private void setUI()
     {
-        hideUI = Instantiate(hideUI, GameObject.FindGameObjectWithTag("canvas").transform);
+        hideUI = Instantiate(hideUI, GameObject.FindGameObjectWithTag("UIContainer").transform);
         hideUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         hideUI.transform.position = new Vector2(hideUI.transform.position.x-50, hideUI.transform.position.y);
     }

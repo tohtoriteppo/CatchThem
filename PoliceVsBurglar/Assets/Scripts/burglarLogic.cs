@@ -8,7 +8,8 @@ public class BurglarLogic : MonoBehaviour {
     public int maxBag;
     public GameObject coin;
     public GameObject bagUI;
-    public GameObject bagPartition;
+    public GameObject respawnEffect;
+    public GameObject teleportZapPrefab;
 
     private GameObject dumpster;
     private List<GameObject> robbableObjects;
@@ -17,21 +18,26 @@ public class BurglarLogic : MonoBehaviour {
     private float deathCounter = 0;
     private float bagScaleFactor = 0.05f;
     private float minSpeed = 0.01f;
+    private float teleportSpeed = 0.8f;
     private int playerNum;
     private int respawnLimit = 180;
     private int bagSize;
     private int immortalTime = 120;
     private int immortalCounter = 0;
+    private bool teleporting = false;
     private bool dead = false;
     private bool immortal = false;
+    private Vector3 targetTeleportPos;
     private Vector3 startPosition;
     private Vector3 deadPosition;
     private Vector3 originalScale;
     private Vector3 lastPos;
     private Vector3 direction;
+    private Vector3 spawnLocation;
     private Movement movement;
     private GameController controller;
     private GameObject teleportObject;
+    private GameObject teleportZap;
 
 
     // Use this for initialization
@@ -53,67 +59,82 @@ public class BurglarLogic : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        if(controller.gameStarted)
+        {
+            if (dead)
+            {
+                deathCounter++;
+                if (deathCounter > respawnLimit)
+                {
+                    Respawn();
+                }
+
+            }
+            else if (teleporting)
+            {
+                teleportZap.transform.position = Vector3.MoveTowards(teleportZap.transform.position, targetTeleportPos, teleportSpeed);
+                if (teleportZap.transform.position == targetTeleportPos)
+                {
+                    teleporting = false;
+                    bagUI.SetActive(true);
+                    Destroy(teleportZap);
+                    transform.position = targetTeleportPos;
+                }
+            }
+            else
+            {
+                if (immortal)
+                {
+                    immortalCounter++;
+                    if (immortalCounter > immortalTime)
+                    {
+                        immortal = false;
+                    }
+                }
+
+                Vector3 newDir = (transform.position - lastPos).normalized;
+                bagUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+                Vector2 pos = new Vector2(bagUI.transform.position.x + bagUI.GetComponent<RectTransform>().sizeDelta.x / 4, bagUI.transform.position.y + bagUI.GetComponent<RectTransform>().sizeDelta.y * 0.7f);
+                bagUI.transform.position = pos;
+
+                if (newDir != Vector3.zero)
+                {
+                    direction = newDir;
+                    //okk
+                }
+                lastPos = transform.position;
+                //if there is an object to rob or pick up
+                if (robbableObjects.Count > 0)
+                {
+                    if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
+                    {
+                        Rob();
+                    }
+                }
+                //drop coin
+                if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_a"))
+                {
+                    DropCoin();
+                }
+                //if teleport
+                if (teleportObject != null)
+                {
+                    if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
+                    {
+                        Teleport();
+                    }
+                }
+                if (dumpster != null)
+                {
+                    if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
+                    {
+                        DumpCoin();
+                    }
+                }
+
+            }
+        }
         
-        if (dead)
-        {
-            deathCounter++;
-            if(deathCounter > respawnLimit)
-            {
-                Respawn();
-            }
-            
-        }
-        else
-        {
-            if(immortal)
-            {
-                immortalCounter++;
-                if(immortalCounter>immortalTime)
-                {
-                    immortal = false;
-                }
-            }
-            Vector3 newDir = (transform.position - lastPos).normalized;
-            bagUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
-            Vector2 pos = new Vector2(bagUI.transform.position.x + bagUI.GetComponent<RectTransform>().sizeDelta.x/4, bagUI.transform.position.y + bagUI.GetComponent<RectTransform>().sizeDelta.y*0.7f);
-            bagUI.transform.position = pos;
-
-            if (newDir != Vector3.zero)
-            {
-                direction = newDir;
-                //okk
-            }
-            lastPos = transform.position;
-            //if there is an object to rob or pick up
-            if (robbableObjects.Count  > 0)
-            {
-                if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
-                {
-                    Rob();
-                }
-            }
-            //drop coin
-            if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_a"))
-            {
-                DropCoin();
-            }
-            //if teleport
-            if(teleportObject != null)
-            {
-                if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
-                {
-                    Teleport();
-                }
-            }
-            if (dumpster != null)
-            {
-                if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
-                {
-                    DumpCoin();
-                }
-            }
-
-        }
         
         
 
@@ -200,12 +221,19 @@ public class BurglarLogic : MonoBehaviour {
         }
         transform.position = deadPosition;
         transform.rotation = Quaternion.identity;
+        SetSpawnLocation();
+        
     }
-    
+    private void SetSpawnLocation()
+    {
+        spawnLocation = controller.getSpawnPoint();
+        GameObject effect = Instantiate(respawnEffect);
+        effect.transform.position = spawnLocation;
+    }
     private void Respawn()
     {
         bagUI.SetActive(true);
-        transform.position = controller.getSpawnPoint();
+        transform.position = spawnLocation;
         transform.rotation = Quaternion.identity;
         movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
         dead = false;
@@ -267,7 +295,8 @@ public class BurglarLogic : MonoBehaviour {
         {
             decreaseBag();
             movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
-            Instantiate(coin, transform.position - direction*0.5f, transform.rotation);
+            GameObject coinObj = Instantiate(coin, transform.position - direction*0.5f, transform.rotation);
+            coinObj.transform.position = new Vector3(coinObj.transform.position.x, transform.position.y - 0.8f, coinObj.transform.position.z);
             //controller.coinDropped();
         }
     }
@@ -301,8 +330,15 @@ public class BurglarLogic : MonoBehaviour {
         
         if (Pay(1))
         {
-            Vector3 phonePos = teleportObject.GetComponent<phoneBoothLogic>().targetPhoneBooth.transform.position;
-            transform.position = new Vector3(phonePos.x, transform.position.y, phonePos.z);
+            teleporting = true;
+            targetTeleportPos = teleportObject.GetComponent<phoneBoothLogic>().targetPhoneBooth.transform.position;
+            targetTeleportPos = new Vector3(targetTeleportPos.x, transform.position.y, targetTeleportPos.z);
+            bagUI.SetActive(false);
+            teleportZap = Instantiate(teleportZapPrefab);
+            teleportZap.transform.position = transform.position;
+            transform.position = deadPosition;
+            
+            //transform.position = new Vector3(phonePos.x, transform.position.y, phonePos.z);
         }
           
     }
@@ -321,7 +357,7 @@ public class BurglarLogic : MonoBehaviour {
 
     private void setBagUI()
     {
-        bagUI = Instantiate(bagUI, GameObject.FindGameObjectWithTag("canvas").transform);
+        bagUI = Instantiate(bagUI, GameObject.FindGameObjectWithTag("UIContainer").transform);
         bagUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         Vector2 pos = new Vector2(bagUI.transform.position.x + bagUI.GetComponent<RectTransform>().sizeDelta.x, bagUI.transform.position.y + bagUI.GetComponent<RectTransform>().sizeDelta.y*2);
         bagUI.transform.position = pos;
@@ -344,5 +380,9 @@ public class BurglarLogic : MonoBehaviour {
             }
         }
         */
+    }
+    public void SetPlayerNum(int number)
+    {
+        playerNum = number;
     }
 }

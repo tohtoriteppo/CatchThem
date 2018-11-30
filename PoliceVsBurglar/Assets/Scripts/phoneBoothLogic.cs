@@ -18,7 +18,6 @@ public class phoneBoothLogic : MonoBehaviour {
         coinEndPos = new Vector3(coinStartPos.x, coinStartPos.y, endZ);
         distance = coinStartPos.z - endZ;
         step = distance / 120f;
-        Debug.Log("ASETP "+step);
     }
 	
 	// Update is called once per frame
@@ -26,7 +25,6 @@ public class phoneBoothLogic : MonoBehaviour {
         coin.transform.localPosition = Vector3.MoveTowards(coin.transform.localPosition, coinEndPos, step);
         if(coin.transform.localPosition == coinEndPos)
         {
-            Debug.Log("HEEP");
             coin.transform.localPosition = coinStartPos;
         }
     }

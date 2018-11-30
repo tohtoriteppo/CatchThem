@@ -15,7 +15,7 @@ public class DumpsterLogic : MonoBehaviour {
     void Start () {
         screenPos = Camera.main.WorldToScreenPoint(transform.position);
         screenPos = new Vector3(screenPos.x+10, screenPos.y+10, screenPos.z);
-        coinText = Instantiate(coinText, GameObject.FindGameObjectWithTag("canvas").transform) as GameObject;
+        coinText = Instantiate(coinText, GameObject.FindGameObjectWithTag("UIContainer").transform) as GameObject;
         coinText.GetComponent<Text>().text = coinsInStash.ToString();
         coinText.transform.position = screenPos;
 		coin = Instantiate(coin, transform.position, transform.rotation);

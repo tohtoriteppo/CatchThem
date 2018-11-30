@@ -19,6 +19,8 @@ TagManager:
   - cafeteria
   - dumpster
   - hide
+  - characterSel
+  - UIContainer
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
+    public bool playTest;
     public int goalLimit;
     public int bankCoinsTotal;
     public int maxCoinsInBank;
@@ -23,6 +24,9 @@ public class GameController : MonoBehaviour {
     public float coinBlockTime;
     public int startEnergy;
     public int energyPerDonut;
+    public bool gameStarted = false;
+    public Animator fadeAnimator;
+    public Animator fadeAnimatorCharacterSelect;
 
     public GameObject winText;
     public GameObject timeLeftText;
@@ -31,83 +35,54 @@ public class GameController : MonoBehaviour {
     public GameObject goalUI;
     public GameObject goalPartition;
     public GameObject startMenu;
+    public GameObject characterSelection;
     public GameObject selectionArrow;
-    public List<GameObject> startMenuButtons;
+    public GameObject characterSelCamera;
+    public GameObject startLocations;
+    public GameObject lockIcon;
+    private List<GameObject> lockIcons;
+    private List<GameObject> players;
+    private List<Transform> startMenuButtons;
 
     private int menuSelection;
+    private bool inTutorial = false;
     public bool inStartMenu;
+    private bool inCharacterSelection = false;
     private int coinsLeft;
     private float timer = 0;
     //private 
     private float timeLimit = 60.0f;
+    private float startTime = 0;
     private GameObject[] spawnPoints;
-	// Use this for initialization
-	void Start () {
-        foreach (string t in Input.GetJoystickNames())
-        {
-            Debug.Log(t);
-        }
-        GameObject[] burglars = GameObject.FindGameObjectsWithTag("burglar");
-        foreach(GameObject obj in burglars)
-        {
-            obj.GetComponent<Movement>().SetSpeed(burglarSpeed);
-        }
-        GameObject[] police = GameObject.FindGameObjectsWithTag("police");
-        Debug.Log("police " + police.Length);
-        foreach (GameObject obj in police)
-        {
-            obj.GetComponent<Movement>().SetSpeed(policeSpeed);
-        }
-        coinsLeft = 0;
-        coinsText.GetComponent<Text>().text = coinsLeft.ToString() + "/" + goalLimit.ToString();
-        spawnPoints = GameObject.FindGameObjectsWithTag("spawnLocation");
-        GameObject[] banks = GameObject.FindGameObjectsWithTag("robbable");
-        int perBank = bankCoinsTotal / banks.Length;
-        int leftovers = bankCoinsTotal % banks.Length;
-        for (int i = 0; i < banks.Length; i++)
-        {
-
-            banks[i].GetComponent<Robbable>().robAmount = perBank;
-            if(leftovers > 0)
-            {
-                banks[i].GetComponent<Robbable>().ProduceMoney();
-                leftovers--;
-            }
-            banks[i].GetComponent<Robbable>().UpdateValue();
-        }
-        //startMenuButtons = new List<GameObject>();
-        //startMenu.SetActive(true);
+    private GameObject mainCanvas;
+    // Use this for initialization
+    void Start () {
+        mainCanvas = GameObject.FindGameObjectWithTag("canvas");
+        SetPlayers();
         SetGoalUI();
+        spawnPoints = GameObject.FindGameObjectsWithTag("spawnLocation");
+        SetBanks();
+        SetStartMenu();
     }
 	
 	// Update is called once per frame
 	void Update () {
         if(inStartMenu)
         {
-            if (Input.GetButtonDown("p1_button_a"))
-            {
-                inStartMenu = false;
-                startMenu.SetActive(false);
-            }
-            float dir = Input.GetAxis("p1_joystick_vertical");
-            //move to play button
-            if (dir>0)
-            {
-                menuSelection = 0;
-                selectionArrow.transform.position = new Vector2(selectionArrow.transform.position.x, startMenuButtons[menuSelection].transform.position.y);
-            }
-            //move to exit button
-            else if(dir<0)
-            {
-                menuSelection = 1;
-                selectionArrow.transform.position = new Vector2(selectionArrow.transform.position.x, startMenuButtons[menuSelection].transform.position.y);
-            }
+            StartMenu();
         }
-        
+        else if(inCharacterSelection)
+        {
+            CharacterSelection();
+        }
+        else if(inTutorial)
+        {
+            Tutorial();
+        }
         else
         {
             
-            timer = Time.timeSinceLevelLoad;
+            timer = Time.timeSinceLevelLoad - startTime;
             timeSlider.GetComponent<Slider>().value = timer / timeLimit;
             timeLeftText.GetComponent<Text>().text = ((int)(60 - timer) + 1).ToString();
             if (timer > timeLimit)
@@ -151,6 +126,8 @@ public class GameController : MonoBehaviour {
         //Vector3 pos = new Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider>().size.y, transform.position.z);
         //goalUI.transform.position = Camera.main.WorldToScreenPoint(pos);
         //bulletBar = weaponUI.transform.GetChild(0).gameObject;
+        coinsLeft = 0;
+        coinsText.GetComponent<Text>().text = coinsLeft.ToString() + "/" + goalLimit.ToString();
         float width = goalUI.GetComponent<RectTransform>().sizeDelta.x;
         float widthPerOne = width / goalLimit;
 
@@ -168,8 +145,203 @@ public class GameController : MonoBehaviour {
             }
         }
     }
+    private void SetStartMenu()
+    {
+        if(playTest)
+        {
+            startMenu.SetActive(false);
+            characterSelection.SetActive(false);
+            characterSelCamera.SetActive(false);
+            StartGame();
+        }
+        else
+        {
+            startMenuButtons = new List<Transform>();
+            foreach (Transform child in startMenu.transform)
+            {
+                startMenuButtons.Add(child);
+            }
+            inStartMenu = true;
+            characterSelection.SetActive(false);
+        }
+        
+    }
+    private void StartMenu()
+    {
+        if (Input.GetButtonDown("p1_button_b"))
+        {
+            inStartMenu = false;
+            if (menuSelection == 0)
+            {
+                characterSelection.SetActive(true);
+                inCharacterSelection = true;
+                fadeAnimator.Play("FadeOut");
+
+            }
+            else if (menuSelection == 1)
+            {
+                //exit game
+            }
+        }
+        float dir = Input.GetAxis("p1_joystick_vertical");
+        //Debug.Log(dir);
+        //move to play button
+        if (dir > 0)
+        {
+            startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(false);
+            menuSelection = 0;
+            startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(true);
+            //selectionArrow.transform.position = new Vector2(selectionArrow.transform.position.x, startMenuButtons[menuSelection].transform.position.y);
+        }
+        //move to exit button
+        else if (dir < 0)
+        {
+            startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(false);
+            menuSelection = 1;
+            startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(true);
+            //selectionArrow.transform.position = new Vector2(selectionArrow.transform.position.x, startMenuButtons[menuSelection].transform.position.y);
+        }
+    }
+    private void CharacterSelection()
+    {
+        if (fadeAnimator.GetCurrentAnimatorStateInfo(0).IsName("FadeIn"))
+        {
+            characterSelCamera.SetActive(true);
+            startMenu.SetActive(false);
+            mainCanvas.SetActive(false);
+            fadeAnimatorCharacterSelect.Play("FadeIn");
+        }
+    }
+    private void Tutorial()
+    {
+        if (fadeAnimatorCharacterSelect.GetCurrentAnimatorStateInfo(0).IsName("FadeIn"))
+        {
+            mainCanvas.SetActive(true);
+            fadeAnimator.Play("FadeIn");
+            characterSelection.SetActive(false);
+            characterSelCamera.SetActive(false);
+            
+            StartGame();
+        }
+    }
+    private void SetPlayers()
+    {
+        players = new List<GameObject>();
+        lockIcons = new List<GameObject>();
+        int i = 0;
+        GameObject[] police = GameObject.FindGameObjectsWithTag("police");
+        foreach (GameObject obj in police)
+        {
+            //obj.GetComponent<Movement>().SetSpeed(policeSpeed);
+           // obj.transform.position = startLocations.transform.GetChild(i).position;
+            players.Add(obj);
+            i++;
+            if (playTest)
+            {
+                obj.GetComponent<Movement>().SetPlayerNum(i);
+            }
+        }
+        GameObject[] burglars = GameObject.FindGameObjectsWithTag("burglar");
+        foreach (GameObject obj in burglars)
+        {
+            //obj.GetComponent<Movement>().SetSpeed(burglarSpeed);
+            //obj.transform.position = startLocations.transform.GetChild(i).position;
+            players.Add(obj);
+            i++;
+            if (playTest)
+            {
+                obj.GetComponent<Movement>().SetPlayerNum(i);
+            }
+        }
+        foreach(GameObject player in players)
+        {
+            GameObject lockObj = Instantiate(lockIcon, characterSelection.transform);
+            lockObj.transform.position = new Vector2(player.transform.position.x, player.transform.position.y);
+            lockObj.transform.localPosition = new Vector3(lockObj.transform.localPosition.x, lockObj.transform.localPosition.y+100, 0);
+            lockObj.SetActive(false);
+            lockIcons.Add(lockObj);
+            
+        }
+        
+    }
+
+    private void SetBanks()
+    {
+        GameObject[] banks = GameObject.FindGameObjectsWithTag("robbable");
+        int perBank = bankCoinsTotal / banks.Length;
+        int leftovers = bankCoinsTotal % banks.Length;
+        for (int i = 0; i < banks.Length; i++)
+        {
+
+            banks[i].GetComponent<Robbable>().robAmount = perBank;
+            if (leftovers > 0)
+            {
+                banks[i].GetComponent<Robbable>().ProduceMoney();
+                leftovers--;
+            }
+            banks[i].GetComponent<Robbable>().UpdateValue();
+        }
+    }
+    private void ExitCharacterSelect()
+    {
+        
+        inCharacterSelection = false;
+        inTutorial = true;
+        
+        fadeAnimatorCharacterSelect.Play("FadeOut");
+    }
+    public GameObject LockCharacter(int selection)
+    {
+        if(!mainCanvas.activeSelf)
+        {
+            if (players[selection].GetComponent<Movement>().locked == false)
+            {
+                players[selection].GetComponent<Movement>().locked = true;
+                lockIcons[selection].SetActive(true);
+                bool allLocked = true;
+                foreach (GameObject player in players)
+                {
+                    if (player.GetComponent<Movement>().locked == false)
+                    {
+                        allLocked = false;
+                    }
+                }
+                if (allLocked)
+                {
+                    ExitCharacterSelect();
+                }
+                return players[selection];
+            }
+            else
+            {
+                return null;
+            }
+        }
+        return null;
+       
+    }
+    public bool UnlockCharacter(int selection)
+    {
+        if (players[selection].GetComponent<Movement>().locked == true)
+        {
+            players[selection].GetComponent<Movement>().locked = false;
+            lockIcons[selection].SetActive(false);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     public void StartGame()
     {
+        gameStarted = true;
+        startTime = Time.timeSinceLevelLoad;
+        inTutorial = false;
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].transform.position = startLocations.transform.GetChild(i).transform.position;
+        }
 
     }
     public void EndGame()

@@ -29,7 +29,7 @@ public class PoliceLogic : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        playerNum = int.Parse(name.Substring(6, 1));
+        //playerNum = int.Parse(name.Substring(6, 1));
         controller = Camera.main.GetComponent<GameController>();
         movement = GetComponent<Movement>();
         energyPerDonut = controller.energyPerDonut;
@@ -131,7 +131,7 @@ public class PoliceLogic : MonoBehaviour {
             dumpster = other.gameObject;
             if(dumpster.GetComponent<DumpsterLogic>().coinsInStash > 0)
             {
-                dumpsterSlider = Instantiate(dumpsterSliderPrefab, GameObject.FindGameObjectWithTag("canvas").transform);
+                dumpsterSlider = Instantiate(dumpsterSliderPrefab, GameObject.FindGameObjectWithTag("UIContainer").transform);
                 dumpsterSlider.transform.position = Camera.main.WorldToScreenPoint(other.transform.position);
             }
             
@@ -159,6 +159,10 @@ public class PoliceLogic : MonoBehaviour {
             cafeteria = null;
         }
 
+    }
+    public void SetPlayerNum(int number)
+    {
+        playerNum = number;
     }
     
 

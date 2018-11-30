@@ -41,17 +41,20 @@ public class WeaponLogic : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if(controller.gameStarted)
+        {
+            FillBulletBar();
+            bulletCounter--;
+            if (bulletCounter <= 0 && bullets > 0 && Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
+            {
+                Shoot();
+            }
+            if (rechargeStation != null /*&& Input.GetButton("p" + playerNum.ToString() + "_button_a")*/)
+            {
+                Recharge();
+            }
+        }
         
-        FillBulletBar();
-        bulletCounter--;
-        if (bulletCounter <= 0 && bullets > 0 && Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
-        {
-            Shoot();
-        }
-        if (rechargeStation != null /*&& Input.GetButton("p" + playerNum.ToString() + "_button_a")*/)
-        {
-            Recharge();
-        }
     }
     public void FillBulletBar()
     {
@@ -122,7 +125,7 @@ public class WeaponLogic : MonoBehaviour {
     private void SetWeaponUI()
     {
         rechargeCounter = automaticRechargeTimeTotal;
-        bulletUI = Instantiate(bulletUI, GameObject.FindGameObjectWithTag("canvas").transform);
+        bulletUI = Instantiate(bulletUI, GameObject.FindGameObjectWithTag("UIContainer").transform);
         bulletUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         //bulletBar = weaponUI.transform.GetChild(0).gameObject;
         width = bulletUI.GetComponent<RectTransform>().sizeDelta.x;
@@ -165,5 +168,9 @@ public class WeaponLogic : MonoBehaviour {
             }
             chargeCounter = 0;
         }
+    }
+    public void SetPlayerNum(int number)
+    {
+        playerNum = number;
     }
 }
