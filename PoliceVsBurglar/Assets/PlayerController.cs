@@ -26,20 +26,24 @@ public class PlayerController : MonoBehaviour {
         if(!characterLocked)
         {
             float dir = Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal");
-            //right
-            if (dir > 0 && move == false)
+            if(playerNum ==1)
+            {
+                Debug.Log("DIR " + dir);
+            }
+            
+            if (dir > 0 && !move)
             {
                 move = true;
                 selection = Mathf.Min(3, selection + 1);
                 selectionArrow.localPosition = new Vector2(leftOffset + selection * offSet, selectionArrow.localPosition.y);
             }
-            else if (dir < 0 && move == false)
+            else if (dir < 0 && !move)
             {
                 move = true;
                 selection = Mathf.Max(0, selection - 1);
                 selectionArrow.localPosition = new Vector2(leftOffset + selection * offSet, selectionArrow.localPosition.y);
             }
-            else
+            else if(dir == 0)
             {
                 move = false;
             }
