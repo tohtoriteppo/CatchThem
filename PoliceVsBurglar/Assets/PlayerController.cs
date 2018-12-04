@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour {
 
     public int playerNum;
     public Transform selectionArrow;
-    private int offSet = 220;
+    private int offSet = 490;
     private float leftOffset;
     private int selection;
     private bool move = false;

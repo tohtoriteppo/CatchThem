@@ -69,7 +69,6 @@ public class Movement : MonoBehaviour {
     public void SetSpeed(float speedToSet)
     {
         speed = speedToSet;
-        Debug.Log("Speed " + speed);
     }
     public float GetSpeed()
     {

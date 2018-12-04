@@ -20,7 +20,7 @@ public class PoliceLogic : MonoBehaviour {
     private int energy;
     private int minEnergy;
     private int dumpsterCounter;
-    private int emptyLimit = 150;
+    private int emptyLimit = 120;
     private GameObject cafeteria;
     private GameObject dumpster;
     private GameObject dumpsterSlider;
@@ -47,7 +47,7 @@ public class PoliceLogic : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(dumpster!=null /*&& Input.GetButton("p" + playerNum.ToString() + "_button_a")*/)
+        if(dumpster!=null)
         {
             EmptyDumpster();
         }
@@ -108,6 +108,11 @@ public class PoliceLogic : MonoBehaviour {
     {
         if (dumpster.GetComponent<DumpsterLogic>().coinsInStash > 0)
         {
+            if(dumpsterSlider==null)
+            {
+                dumpsterSlider = Instantiate(dumpsterSliderPrefab, GameObject.FindGameObjectWithTag("UIContainer").transform);
+                dumpsterSlider.transform.position = Camera.main.WorldToScreenPoint(dumpster.transform.position);
+            }
             dumpsterCounter++;
             dumpsterSlider.GetComponent<Slider>().value = ((float)dumpsterCounter / (float)emptyLimit);
             if (dumpsterCounter > emptyLimit)

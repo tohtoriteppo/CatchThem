@@ -10,7 +10,8 @@ public class BurglarLogic : MonoBehaviour {
     public GameObject bagUI;
     public GameObject respawnEffect;
     public GameObject teleportZapPrefab;
-
+    public GameObject respawnTextPrefab;
+    private GameObject respawnText;
     private GameObject dumpster;
     private List<GameObject> robbableObjects;
     private float slowAmount;
@@ -18,7 +19,7 @@ public class BurglarLogic : MonoBehaviour {
     private float deathCounter = 0;
     private float bagScaleFactor = 0.05f;
     private float minSpeed = 0.01f;
-    private float teleportSpeed = 0.8f;
+    private float teleportSpeed = 0.6f;
     private int playerNum;
     private int respawnLimit = 180;
     private int bagSize;
@@ -27,6 +28,7 @@ public class BurglarLogic : MonoBehaviour {
     private bool teleporting = false;
     private bool dead = false;
     private bool immortal = false;
+    private bool respawning = false;
     private Vector3 targetTeleportPos;
     private Vector3 startPosition;
     private Vector3 deadPosition;
@@ -63,6 +65,7 @@ public class BurglarLogic : MonoBehaviour {
         {
             if (dead)
             {
+                respawnText.GetComponent<Text>().text = "Respawn in "+((int)(respawnLimit - deathCounter)/60+1).ToString();
                 deathCounter++;
                 if (deathCounter > respawnLimit)
                 {
@@ -79,6 +82,23 @@ public class BurglarLogic : MonoBehaviour {
                     bagUI.SetActive(true);
                     Destroy(teleportZap);
                     transform.position = targetTeleportPos;
+                }
+            }
+            else if(respawning)
+            {
+                teleportZap.transform.position = Vector3.MoveTowards(teleportZap.transform.position, spawnLocation, teleportSpeed);
+                if (teleportZap.transform.position == spawnLocation)
+                {
+                    respawning = false;
+                    bagUI.SetActive(true);
+                    Destroy(teleportZap);
+                    
+                    immortal = true;
+                    immortalCounter = 0;
+                    transform.position = spawnLocation;
+                    transform.rotation = Quaternion.identity;
+                    bagUI.SetActive(true);
+                    Debug.Log("ÖHH");
                 }
             }
             else
@@ -219,6 +239,12 @@ public class BurglarLogic : MonoBehaviour {
            decreaseBag();
             //controller.coinDropped();
         }
+        teleportZap = Instantiate(teleportZapPrefab);
+        teleportZap.transform.position = transform.position;
+        teleportZap.SetActive(false);
+        
+        respawnText = Instantiate(respawnTextPrefab, GameObject.FindGameObjectWithTag("UIContainer").transform);
+        respawnText.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         transform.position = deadPosition;
         transform.rotation = Quaternion.identity;
         SetSpawnLocation();
@@ -232,13 +258,12 @@ public class BurglarLogic : MonoBehaviour {
     }
     private void Respawn()
     {
-        bagUI.SetActive(true);
-        transform.position = spawnLocation;
-        transform.rotation = Quaternion.identity;
+
+        Destroy(respawnText);
+        teleportZap.SetActive(true);
+        respawning = true;
         movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
         dead = false;
-        immortal = true;
-        immortalCounter = 0;
         ReSizeBag();
     }
     private void incrementBag()
@@ -274,7 +299,7 @@ public class BurglarLogic : MonoBehaviour {
                     index++;
                 }
             }
-            if (robbableObjects[index].name.Substring(0, 4) == "coin")
+            if (robbableObjects.Count > index && robbableObjects[index].name.Substring(0, 4) == "coin")
             {
                 incrementBag();
                 Vector3 scale = transform.GetChild(0).transform.localScale;

@@ -6,10 +6,12 @@ public class Border_Control : MonoBehaviour {
     public Shader shader1 ;
     public Shader shader2 ;
     public GameObject target;
+    private List<GameObject> objects;
     // Use this for initialization
     void Start () {
         shader1 = Shader.Find("Mobile/Diffuse");
         target.GetComponent<Renderer>().material.shader = shader1;
+        objects = new List<GameObject>();
     }
 	
 	// Update is called once per frame
@@ -23,12 +25,14 @@ public class Border_Control : MonoBehaviour {
             if(other.tag.Equals("police"))
             {
                 target.GetComponent<Renderer>().material.shader = shader2;
+                objects.Add(other.gameObject);
             }
         }
-        else if (other.tag.Equals("police")|| other.tag.Equals("burglar"))
+        else if (other.tag.Equals("police") || other.tag.Equals("burglar"))
         {
            // Debug.Log("enter");
             target.GetComponent<Renderer>().material.shader = shader2;
+            objects.Add(other.gameObject);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -37,7 +41,12 @@ public class Border_Control : MonoBehaviour {
         if (other.tag.Equals("police") || other.tag.Equals("burglar"))
         {
             //Debug.Log("exit");
-            target.GetComponent<Renderer>().material.shader = shader1;
+            
+            objects.Remove(other.gameObject);
+            if(objects.Count == 0)
+            {
+                target.GetComponent<Renderer>().material.shader = shader1;
+            }
         }
     }
 }

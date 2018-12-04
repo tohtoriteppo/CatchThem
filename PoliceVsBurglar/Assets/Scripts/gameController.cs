@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Playables;
 
 public class GameController : MonoBehaviour {
 
@@ -27,7 +28,10 @@ public class GameController : MonoBehaviour {
     public bool gameStarted = false;
     public Animator fadeAnimator;
     public Animator fadeAnimatorCharacterSelect;
+    public AudioClip mainTheme;
 
+    public GameObject tutorial;
+    private PlayableDirector Timeline;
     public GameObject winText;
     public GameObject timeLeftText;
     public GameObject timeSlider;
@@ -43,6 +47,7 @@ public class GameController : MonoBehaviour {
     private List<GameObject> lockIcons;
     private List<GameObject> players;
     private List<Transform> startMenuButtons;
+    private AudioSource audioSource;
 
     private int menuSelection;
     private bool inTutorial = false;
@@ -57,6 +62,8 @@ public class GameController : MonoBehaviour {
     private GameObject mainCanvas;
     // Use this for initialization
     void Start () {
+        audioSource = GetComponent<AudioSource>();
+        //Timeline = tutorial.GetComponent<PlayableDirector>();
         mainCanvas = GameObject.FindGameObjectWithTag("canvas");
         SetPlayers();
         SetGoalUI();
@@ -89,6 +96,8 @@ public class GameController : MonoBehaviour {
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 timer = 0;
+                //SetPlayers();
+                //Run every objects start function again
             }
         }
         
@@ -170,13 +179,14 @@ public class GameController : MonoBehaviour {
     {
         if (Input.GetButtonDown("p1_button_b"))
         {
+            startMenuButtons[menuSelection].GetComponent<Animator>().Play("Pressed");
             inStartMenu = false;
             if (menuSelection == 0)
             {
                 characterSelection.SetActive(true);
                 inCharacterSelection = true;
                 fadeAnimator.Play("FadeOut");
-
+                
             }
             else if (menuSelection == 1)
             {
@@ -188,17 +198,22 @@ public class GameController : MonoBehaviour {
         //move to play button
         if (dir > 0)
         {
-            startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(false);
+            //startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(false);
+            startMenuButtons[1].GetComponent<Animator>().Play("Normal");
             menuSelection = 0;
-            startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(true);
+            startMenuButtons[0].GetComponent<Animator>().Play("Highlighted");
+            //startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(true);
             //selectionArrow.transform.position = new Vector2(selectionArrow.transform.position.x, startMenuButtons[menuSelection].transform.position.y);
         }
         //move to exit button
         else if (dir < 0)
         {
-            startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(false);
+
+            //startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(false);
+            startMenuButtons[0].GetComponent<Animator>().Play("Normal");
             menuSelection = 1;
-            startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(true);
+            startMenuButtons[1].GetComponent<Animator>().Play("Highlighted");
+            //startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(true);
             //selectionArrow.transform.position = new Vector2(selectionArrow.transform.position.x, startMenuButtons[menuSelection].transform.position.y);
         }
     }
@@ -220,7 +235,19 @@ public class GameController : MonoBehaviour {
             fadeAnimator.Play("FadeIn");
             characterSelection.SetActive(false);
             characterSelCamera.SetActive(false);
+            //Timeline.Play();
+            //StartGame();
+            GameObject.Find("Skip").GetComponent<Text>().enabled = true;
             
+        }
+        if(Input.GetButtonDown("p1_button_b"))
+        {
+            tutorial.SetActive(true);
+            GameObject.Find("Skip").GetComponent<Text>().enabled = false;
+        }
+        else if(Input.GetButtonDown("p1_button_a"))
+        {
+            GameObject.Find("Skip").GetComponent<Text>().enabled = false;
             StartGame();
         }
     }
@@ -257,7 +284,7 @@ public class GameController : MonoBehaviour {
         {
             GameObject lockObj = Instantiate(lockIcon, characterSelection.transform);
             lockObj.transform.position = new Vector2(player.transform.position.x, player.transform.position.y);
-            lockObj.transform.localPosition = new Vector3(lockObj.transform.localPosition.x, lockObj.transform.localPosition.y+100, 0);
+            lockObj.transform.localPosition = new Vector3(lockObj.transform.localPosition.x+106, lockObj.transform.localPosition.y-170, 0);
             lockObj.SetActive(false);
             lockIcons.Add(lockObj);
             
@@ -335,6 +362,21 @@ public class GameController : MonoBehaviour {
     }
     public void StartGame()
     {
+        gameObject.GetComponent<PlayableDirector>().Play();
+        Debug.Log("Hahaaa");
+        StartCoroutine(Waitabit(4.0f));
+        Debug.Log("BUUU");
+        
+        
+    }
+    public void EndGame()
+    {
+
+    }
+    private IEnumerator Waitabit(float time)
+    {
+        yield return new WaitForSeconds(time);
+        //audioSource.Play(mainTheme);
         gameStarted = true;
         startTime = Time.timeSinceLevelLoad;
         inTutorial = false;
@@ -342,10 +384,5 @@ public class GameController : MonoBehaviour {
         {
             players[i].transform.position = startLocations.transform.GetChild(i).transform.position;
         }
-
-    }
-    public void EndGame()
-    {
-
     }
 }
