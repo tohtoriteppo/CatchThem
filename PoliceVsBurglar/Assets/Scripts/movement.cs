@@ -28,6 +28,7 @@ public class Movement : MonoBehaviour {
         else
         {
             speed = Camera.main.GetComponent<GameController>().burglarSpeed;
+            GetComponent<BurglarLogic>().setSpeed(speed);
         }
         //directionLight = Instantiate(directionLight, transform);
         // directionLight.transform.position = Vector3.zero;

@@ -15,7 +15,7 @@ public class BurglarLogic : MonoBehaviour {
     private GameObject dumpster;
     private List<GameObject> robbableObjects;
     private float slowAmount;
-    private float originalSpeed;
+    private float originalSpeed = 0.1f;
     private float deathCounter = 0;
     private float bagScaleFactor = 0.05f;
     private float minSpeed = 0.01f;
@@ -57,7 +57,10 @@ public class BurglarLogic : MonoBehaviour {
         dumpster = null;
         setBagUI();
     }
-	
+	public void setSpeed(float speed)
+    {
+        originalSpeed = speed;
+    }
 	// Update is called once per frame
 	void Update () {
 

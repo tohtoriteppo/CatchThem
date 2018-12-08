@@ -53,6 +53,7 @@ public class GameController : MonoBehaviour {
     private bool inTutorial = false;
     public bool inStartMenu;
     private bool inCharacterSelection = false;
+    private bool tutorialStarted = false;
     private int coinsLeft;
     private float timer = 0;
     //private 
@@ -70,6 +71,7 @@ public class GameController : MonoBehaviour {
         spawnPoints = GameObject.FindGameObjectsWithTag("spawnLocation");
         SetBanks();
         SetStartMenu();
+        Debug.Log("HLALOO");
     }
 	
 	// Update is called once per frame
@@ -94,8 +96,9 @@ public class GameController : MonoBehaviour {
             timeLeftText.GetComponent<Text>().text = ((int)(60 - timer) + 1).ToString();
             if (timer > timeLimit)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                timer = 0;
+                EndGame(true);
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                //timer = 0;
                 //SetPlayers();
                 //Run every objects start function again
             }
@@ -113,7 +116,9 @@ public class GameController : MonoBehaviour {
         coinsLeft += howMany;
         if (coinsLeft >= goalLimit)
         {
+            //THIEFS WIN
             winText.SetActive(true);
+            EndGame(false);
         }
         coinsText.GetComponent<Text>().text = coinsLeft.ToString()+"/"+goalLimit.ToString();
     }
@@ -172,8 +177,10 @@ public class GameController : MonoBehaviour {
             }
             inStartMenu = true;
             characterSelection.SetActive(false);
+            
         }
         
+
     }
     private void StartMenu()
     {
@@ -191,6 +198,7 @@ public class GameController : MonoBehaviour {
             else if (menuSelection == 1)
             {
                 //exit game
+                Application.Quit();
             }
         }
         float dir = Input.GetAxis("p1_joystick_vertical");
@@ -208,7 +216,6 @@ public class GameController : MonoBehaviour {
         //move to exit button
         else if (dir < 0)
         {
-
             //startMenuButtons[menuSelection].GetChild(0).gameObject.SetActive(false);
             startMenuButtons[0].GetComponent<Animator>().Play("Normal");
             menuSelection = 1;
@@ -242,13 +249,24 @@ public class GameController : MonoBehaviour {
         }
         if(Input.GetButtonDown("p1_button_b"))
         {
-            tutorial.SetActive(true);
-            GameObject.Find("Skip").GetComponent<Text>().enabled = false;
+            if(!tutorialStarted)
+            {
+                tutorial.SetActive(true);
+                Destroy(GameObject.Find("Skip"));
+                //.Find("Skip").GetComponent<Text>().enabled = false;
+                tutorialStarted = true;
+            }
+            
         }
         else if(Input.GetButtonDown("p1_button_a"))
         {
-            GameObject.Find("Skip").GetComponent<Text>().enabled = false;
-            StartGame();
+            if(!tutorialStarted)
+            {
+                GameObject.Find("Skip").GetComponent<Text>().enabled = false;
+                StartGame();
+                tutorialStarted = true;
+            }
+            
         }
     }
     private void SetPlayers()
@@ -278,6 +296,7 @@ public class GameController : MonoBehaviour {
             if (playTest)
             {
                 obj.GetComponent<Movement>().SetPlayerNum(i);
+                //obj.GetComponent<BurglarLogic>().setUp();
             }
         }
         foreach(GameObject player in players)
@@ -363,14 +382,15 @@ public class GameController : MonoBehaviour {
     public void StartGame()
     {
         gameObject.GetComponent<PlayableDirector>().Play();
-        Debug.Log("Hahaaa");
-        StartCoroutine(Waitabit(4.0f));
-        Debug.Log("BUUU");
-        
+        StartCoroutine(Waitabit(4.0f));        
         
     }
-    public void EndGame()
+    public void EndGame(bool policeWin)
     {
+        if(policeWin)
+            SceneManager.LoadScene("PoliceWin", LoadSceneMode.Single);
+        else
+            SceneManager.LoadScene("ThiefWin", LoadSceneMode.Single);
 
     }
     private IEnumerator Waitabit(float time)

@@ -28,6 +28,14 @@ public class Border_Control : MonoBehaviour {
                 objects.Add(other.gameObject);
             }
         }
+        else if(tag == "robbable")
+        {
+            if (other.tag.Equals("burglar"))
+            {
+                target.GetComponent<Renderer>().material.shader = shader2;
+                objects.Add(other.gameObject);
+            }
+        }
         else if (other.tag.Equals("police") || other.tag.Equals("burglar"))
         {
            // Debug.Log("enter");

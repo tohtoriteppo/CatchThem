@@ -26,11 +26,6 @@ public class PlayerController : MonoBehaviour {
         if(!characterLocked)
         {
             float dir = Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal");
-            if(playerNum ==1)
-            {
-                Debug.Log("DIR " + dir);
-            }
-            
             if (dir > 0 && !move)
             {
                 move = true;
@@ -57,7 +52,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_a"))
+        else if (Input.GetButtonDown("p" + playerNum.ToString() + "_button_a"))
         {
             if (controller.UnlockCharacter(selection))
             {
