@@ -17,6 +17,7 @@ public class truckMove : MonoBehaviour {
     private int coinsCarried;
     private Quaternion lidStartRotation;
     private Quaternion lidEndRotation;
+    private AudioSource audioSource;
     public bool atDestination = false;
 
     void Start()
@@ -30,6 +31,7 @@ public class truckMove : MonoBehaviour {
         childCount = checkpointParent.transform.childCount;
         counter = (int)collectTime*60;
         dumpster = null;
+        audioSource = GetComponent<AudioSource>();
         //agent.updateUpAxis = false;
     }
 
@@ -80,6 +82,7 @@ public class truckMove : MonoBehaviour {
         dumpster.GetComponent<DumpsterLogic>().coinsInStash = 0;
         dumpster.GetComponent<DumpsterLogic>().UpdateValue();
         dumpster.GetComponent<DumpsterLogic>().CloseLid();
+        audioSource.Play();
     }
     private void changeTarget()
     {

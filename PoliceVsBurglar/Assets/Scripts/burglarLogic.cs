@@ -11,6 +11,9 @@ public class BurglarLogic : MonoBehaviour {
     public GameObject respawnEffect;
     public GameObject teleportZapPrefab;
     public GameObject respawnTextPrefab;
+    public AudioClip dumpCoinClip;
+    public AudioClip gatherCoinClip;
+    public AudioClip dropCoinClip;
     private GameObject respawnText;
     private GameObject dumpster;
     private List<GameObject> robbableObjects;
@@ -40,6 +43,8 @@ public class BurglarLogic : MonoBehaviour {
     private GameController controller;
     private GameObject teleportObject;
     private GameObject teleportZap;
+    private AudioSource audioSource;
+
 
 
     // Use this for initialization
@@ -56,6 +61,7 @@ public class BurglarLogic : MonoBehaviour {
         teleportObject = null;
         dumpster = null;
         setBagUI();
+        audioSource = GetComponent<AudioSource>();
     }
 	public void setSpeed(float speed)
     {
@@ -116,9 +122,7 @@ public class BurglarLogic : MonoBehaviour {
                 }
 
                 Vector3 newDir = (transform.position - lastPos).normalized;
-                bagUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
-                Vector2 pos = new Vector2(bagUI.transform.position.x + bagUI.GetComponent<RectTransform>().sizeDelta.x / 4, bagUI.transform.position.y + bagUI.GetComponent<RectTransform>().sizeDelta.y * 0.7f);
-                bagUI.transform.position = pos;
+                
 
                 if (newDir != Vector3.zero)
                 {
@@ -157,9 +161,11 @@ public class BurglarLogic : MonoBehaviour {
 
             }
         }
-        
-        
-        
+        bagUI.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+        Vector2 pos = new Vector2(bagUI.transform.position.x + bagUI.GetComponent<RectTransform>().sizeDelta.x / 4, bagUI.transform.position.y + bagUI.GetComponent<RectTransform>().sizeDelta.y * 0.7f);
+        bagUI.transform.position = pos;
+
+
 
     }
 
@@ -313,7 +319,8 @@ public class BurglarLogic : MonoBehaviour {
                 //controller.coinGathered(1);
             }
         }
-        
+        audioSource.clip = gatherCoinClip;
+        audioSource.Play();
 
 
     } 
@@ -326,6 +333,8 @@ public class BurglarLogic : MonoBehaviour {
             GameObject coinObj = Instantiate(coin, transform.position - direction*0.5f, transform.rotation);
             coinObj.transform.position = new Vector3(coinObj.transform.position.x, transform.position.y - 0.8f, coinObj.transform.position.z);
             //controller.coinDropped();
+            audioSource.clip = dropCoinClip;
+            audioSource.Play();
         }
     }
 
@@ -378,7 +387,8 @@ public class BurglarLogic : MonoBehaviour {
             dumpster.GetComponent<DumpsterLogic>().UpdateValue();
             decreaseBag();
             movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
-
+            audioSource.clip = dumpCoinClip;
+            audioSource.Play();
         }
 
     }

@@ -10,6 +10,8 @@ public class WeaponLogic : MonoBehaviour {
     public GameObject bulletBar;
     public GameObject bullet;
     public GameObject rechargeSliderPrefab;
+    public AudioClip shootSound;
+    //public AudioClip 
     public List<GameObject> partitions;
 
     private float bulletSpeed;
@@ -28,6 +30,7 @@ public class WeaponLogic : MonoBehaviour {
     private GameController controller;
     private GameObject rechargeStation;
     private GameObject rechargeSlider;
+    private AudioSource audioSource;
     // Use this for initialization
     void Start()
     {
@@ -36,6 +39,8 @@ public class WeaponLogic : MonoBehaviour {
         movement = GetComponent<Movement>();
         SetWeapon();
         SetWeaponUI();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = shootSound;
     }
 
     // Update is called once per frame
@@ -43,7 +48,7 @@ public class WeaponLogic : MonoBehaviour {
     {
         if(controller.gameStarted)
         {
-            FillBulletBar();
+            
             bulletCounter--;
             if (bulletCounter <= 0 && bullets > 0 && Input.GetButtonDown("p" + playerNum.ToString() + "_button_b"))
             {
@@ -54,7 +59,8 @@ public class WeaponLogic : MonoBehaviour {
                 Recharge();
             }
         }
-        
+        FillBulletBar();
+
     }
     public void FillBulletBar()
     {
@@ -85,6 +91,7 @@ public class WeaponLogic : MonoBehaviour {
         bul.transform.position = bul.transform.position + movement.GetDirection();
         bulletCounter = bulletCD;
         RemoveBullet();
+        audioSource.Play();
     }
 
     private void Recharge()

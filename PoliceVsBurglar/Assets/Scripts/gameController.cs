@@ -381,6 +381,10 @@ public class GameController : MonoBehaviour {
     }
     public void StartGame()
     {
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].transform.position = startLocations.transform.GetChild(i).transform.position;
+        }
         gameObject.GetComponent<PlayableDirector>().Play();
         StartCoroutine(Waitabit(4.0f));        
         
@@ -400,9 +404,6 @@ public class GameController : MonoBehaviour {
         gameStarted = true;
         startTime = Time.timeSinceLevelLoad;
         inTutorial = false;
-        for (int i = 0; i < players.Count; i++)
-        {
-            players[i].transform.position = startLocations.transform.GetChild(i).transform.position;
-        }
+        
     }
 }
