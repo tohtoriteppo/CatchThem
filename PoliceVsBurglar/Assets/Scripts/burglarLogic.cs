@@ -13,8 +13,8 @@ public class BurglarLogic : MonoBehaviour {
     public GameObject respawnTextPrefab;
     public AudioClip dumpCoinClip;
     public AudioClip gatherCoinClip;
+    public AudioClip[] gatherCoinClips;
     public AudioClip dropCoinClip;
-    public AudioClip respawnClip;
     public AudioClip teleportClip;
     private GameObject respawnText;
     private GameObject dumpster;
@@ -278,8 +278,8 @@ public class BurglarLogic : MonoBehaviour {
         respawning = true;
         movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
         dead = false;
-        audioSource.clip = respawnClip;
-        audioSource.Play();
+        controller.GetComponent<AudioSource>().clip = controller.respawnClip;
+        controller.GetComponent<AudioSource>().Play();
         ReSizeBag();
     }
     private void incrementBag()
@@ -308,6 +308,8 @@ public class BurglarLogic : MonoBehaviour {
                     robbableObjects[0].gameObject.GetComponent<Robbable>().UpdateValue();
                     Vector3 scale = transform.GetChild(0).transform.localScale;
                     movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
+                    audioSource.clip = gatherCoinClips[Mathf.Max(Mathf.Min(5, bagSize - 1), 0)];
+                    audioSource.Play();
                     //controller.coinGathered(1);
                 }
                 else
@@ -323,11 +325,12 @@ public class BurglarLogic : MonoBehaviour {
                 GameObject toDestroy = robbableObjects[index];
                 robbableObjects.Remove(toDestroy);
                 Destroy(toDestroy);
+                audioSource.clip = gatherCoinClips[Mathf.Max(Mathf.Min(5, bagSize - 1), 0)];
+                audioSource.Play();
                 //controller.coinGathered(1);
             }
         }
-        audioSource.clip = gatherCoinClip;
-        audioSource.Play();
+        
 
 
     } 
@@ -362,10 +365,10 @@ public class BurglarLogic : MonoBehaviour {
 
     private void ReSizeBag()
     {
-        transform.GetChild(0).transform.localScale = new Vector3(
+        /*transform.GetChild(0).transform.localScale = new Vector3(
             originalScale.x + bagScaleFactor * bagSize, 
             originalScale.y + bagScaleFactor * bagSize, 
-            originalScale.z + bagScaleFactor * bagSize);
+            originalScale.z + bagScaleFactor * bagSize);*/
         bagUI.GetComponent<Text>().text = bagSize.ToString();
     }
 

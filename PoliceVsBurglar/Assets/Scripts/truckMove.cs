@@ -7,7 +7,8 @@ public class truckMove : MonoBehaviour {
 
     public GameObject checkpointParent;
     public float collectTime;
-
+    public AudioClip emptyClip;
+    public AudioClip coinClip;
     private Animator animator;
     private GameObject dumpster;
     private NavMeshAgent agent;
@@ -46,7 +47,7 @@ public class truckMove : MonoBehaviour {
                 counter--;
                 if (counter <= 0)
                 {
-                    animator.Play("Trunk_close");
+                   
                     emptyDumpster();
                     changeTarget();
                     counter = (int)collectTime * 60;
@@ -64,8 +65,12 @@ public class truckMove : MonoBehaviour {
             dumpster = other.gameObject;
             if(Vector3.Distance(dumpster.transform.parent.transform.position,agent.destination)<2.0f)
             {
-                animator.Play("Trunk_Open");
-                dumpster.GetComponent<DumpsterLogic>().OpenLid();
+                if(dumpster.GetComponent<DumpsterLogic>().coinsInStash > 0)
+                {
+                    animator.Play("Trunk_Open");
+                    dumpster.GetComponent<DumpsterLogic>().OpenLid();
+                }
+                
                 //OpenLid();
                 atDestination = true;
             }
@@ -83,13 +88,25 @@ public class truckMove : MonoBehaviour {
 
     private void emptyDumpster()
     {
+        if(dumpster.GetComponent<DumpsterLogic>().coinsInStash > 0)
+        {
+            animator.Play("Trunk_close");
+            coinsCarried += dumpster.GetComponent<DumpsterLogic>().coinsInStash;
+            controller.CoinGathered(dumpster.GetComponent<DumpsterLogic>().coinsInStash);
+            Debug.Log("Coins carried: " + coinsCarried.ToString());
+            if(controller.GetCoinsGathered() >= controller.goalLimit)
+            {
+                dumpster.transform.parent.GetChild(0).gameObject.SetActive(true);
+            }
+            dumpster.GetComponent<DumpsterLogic>().coinsInStash = 0;
+            dumpster.GetComponent<DumpsterLogic>().UpdateValue();
+            dumpster.GetComponent<DumpsterLogic>().CloseLid();
+            audioSource.clip = coinClip;
+            audioSource.Play();
+            controller.GetComponent<AudioSource>().clip = emptyClip;
+            controller.GetComponent<AudioSource>().Play();
+        }
         
-        coinsCarried += dumpster.GetComponent<DumpsterLogic>().coinsInStash;
-        Camera.main.GetComponent<GameController>().CoinGathered(dumpster.GetComponent<DumpsterLogic>().coinsInStash);
-        dumpster.GetComponent<DumpsterLogic>().coinsInStash = 0;
-        dumpster.GetComponent<DumpsterLogic>().UpdateValue();
-        dumpster.GetComponent<DumpsterLogic>().CloseLid();
-        audioSource.Play();
     }
     private void changeTarget()
     {

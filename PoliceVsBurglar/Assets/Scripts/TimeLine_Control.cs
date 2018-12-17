@@ -19,8 +19,12 @@ public class TimeLine_Control : MonoBehaviour {
 	void Update () {
         if (Input.GetButtonDown("p1" + "_button_b") || Input.anyKeyDown)
         {
+            Debug.Log("ÖÖG");
+            Camera.main.GetComponent<AudioSource>().clip = Camera.main.GetComponent<GameController>().buttonClip;
+            Camera.main.GetComponent<AudioSource>().Play();
             Timeline.Play();
             Current.SetActive(false);
+            
         }
     }
 }

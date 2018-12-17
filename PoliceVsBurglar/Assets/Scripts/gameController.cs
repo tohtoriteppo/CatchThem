@@ -8,6 +8,7 @@ using UnityEngine.Playables;
 public class GameController : MonoBehaviour {
 
     public bool playTest;
+    public bool randomizedStartPositions;
     public int goalLimit;
     public int bankCoinsTotal;
     public int maxCoinsInBank;
@@ -30,7 +31,9 @@ public class GameController : MonoBehaviour {
     public Animator fadeAnimatorCharacterSelect;
     public AudioClip mainTheme;
     public AudioClip buttonClip;
+    public AudioClip respawnClip;
 
+    public GameObject skipObj;
     public GameObject tutorial;
     private PlayableDirector Timeline;
     public GameObject winText;
@@ -64,6 +67,7 @@ public class GameController : MonoBehaviour {
     private GameObject mainCanvas;
     // Use this for initialization
     void Start () {
+        Application.targetFrameRate = 60;
         audioSource = GetComponent<AudioSource>();
         //Timeline = tutorial.GetComponent<PlayableDirector>();
         mainCanvas = GameObject.FindGameObjectWithTag("canvas");
@@ -119,7 +123,7 @@ public class GameController : MonoBehaviour {
         if (coinsLeft >= goalLimit)
         {
             //THIEFS WIN
-            winText.SetActive(true);
+           // winText.SetActive(true);
             StartCoroutine(EndGame(false));
         }
         coinsText.GetComponent<Text>().text = coinsLeft.ToString()+"/"+goalLimit.ToString();
@@ -131,9 +135,9 @@ public class GameController : MonoBehaviour {
         coinsText.GetComponent<Text>().text = coinsLeft.ToString() + "/" + goalLimit.ToString();
         goalUI.transform.GetChild(coinsLeft).gameObject.SetActive(true);
     }
-    public Vector3 getSpawnPoint()
+    public Vector3 getSpawnPoint(int less = 0)
     {
-        return spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position;
+        return spawnPoints[Random.Range(0, spawnPoints.Length-less)].transform.position;
     }
 
     private void SetGoalUI()
@@ -259,6 +263,8 @@ public class GameController : MonoBehaviour {
                 tutorial.SetActive(true);
                 Destroy(GameObject.Find("Skip"));
                 //.Find("Skip").GetComponent<Text>().enabled = false;
+                audioSource.clip = buttonClip;
+                audioSource.Play();
                 tutorialStarted = true;
             }
             
@@ -269,6 +275,8 @@ public class GameController : MonoBehaviour {
             {
                 GameObject.Find("Skip").GetComponent<Text>().enabled = false;
                 StartGame();
+                audioSource.clip = buttonClip;
+                audioSource.Play();
                 tutorialStarted = true;
             }
             
@@ -388,13 +396,35 @@ public class GameController : MonoBehaviour {
     }
     public void StartGame()
     {
+        Vector3 same = Vector3.zero;
         for (int i = 0; i < players.Count; i++)
         {
-            players[i].transform.position = startLocations.transform.GetChild(i).transform.position;
+            if(randomizedStartPositions)
+            {
+                if (i > 1)
+                {
+                    Vector3 pos = getSpawnPoint(1);
+                    while (same == pos)
+                    {
+                        pos = getSpawnPoint(1);
+                    }
+                    players[i].transform.position = pos;
+                    same = pos;
+                }
+                else
+                {
+                    players[i].transform.position = startLocations.transform.GetChild(i).transform.position;
+                }
+            }
+            else
+            {
+                players[i].transform.position = startLocations.transform.GetChild(i).transform.position;
+            }
+
         }
         gameObject.GetComponent<PlayableDirector>().Play();
         StartCoroutine(Waitabit(4.0f));
-        
+        skipObj.SetActive(false);
     }
     public IEnumerator EndGame(bool policeWin)
     {
@@ -412,11 +442,16 @@ public class GameController : MonoBehaviour {
         gameStarted = true;
         startTime = Time.timeSinceLevelLoad;
         inTutorial = false;
+        
         GameObject[] trucks = GameObject.FindGameObjectsWithTag("truck");
         foreach (GameObject truck in trucks)
         {
             truck.GetComponent<truckMove>().StartMoving();
         }
 
+    }
+    public int GetCoinsGathered()
+    {
+        return coinsLeft;
     }
 }

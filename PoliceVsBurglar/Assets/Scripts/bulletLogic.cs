@@ -6,6 +6,7 @@ public class bulletLogic : MonoBehaviour {
 
     private int lifeCounter;
     private AudioSource audioSource;
+    private float speedMag;
     // Use this for initialization
     void Awake () {
         //GetComponent<Rigidbody>().velocity = new Vector3(10, 0, 10);
@@ -20,11 +21,13 @@ public class bulletLogic : MonoBehaviour {
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-    
+        speedMag = GetComponent<Rigidbody>().velocity.magnitude;
     }
 
     // Update is called once per frame
     void Update () {
+        GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity.normalized * speedMag;
+        speedMag = GetComponent<Rigidbody>().velocity.magnitude;
         lifeCounter--;
         if(lifeCounter <= 0)
         {

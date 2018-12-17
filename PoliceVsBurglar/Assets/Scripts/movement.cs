@@ -46,11 +46,21 @@ public class Movement : MonoBehaviour {
             }
             transform.rotation = Quaternion.LookRotation(direction);
             lastPos = transform.position;
+            //WITH POSITION CHANGE
+            
             transform.position =
                 new Vector3(transform.position.x - Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal") * speed,
                 transform.position.y,
                 transform.position.z - Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical") * speed);
 
+            
+            //WITH VELOCITY
+            /*
+            GetComponent<Rigidbody>().velocity = 
+                new Vector3(-Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal") * speed * 60,
+                0,
+                -Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical") * speed * 60);
+                */
             //For animator
             //idle
             if ((Input.GetAxis("p" + playerNum.ToString() + "_joystick_horizontal")) == 0 && (Input.GetAxis("p" + playerNum.ToString() + "_joystick_vertical")) == 0)
