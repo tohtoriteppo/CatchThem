@@ -97,7 +97,8 @@ public class GameController : MonoBehaviour {
             timeLeftText.GetComponent<Text>().text = ((int)(60 - timer) + 1).ToString();
             if (timer > timeLimit)
             {
-                EndGame(true);
+                
+                StartCoroutine(EndGame(true));
                 //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 //timer = 0;
                 //SetPlayers();
@@ -119,7 +120,7 @@ public class GameController : MonoBehaviour {
         {
             //THIEFS WIN
             winText.SetActive(true);
-            EndGame(false);
+            StartCoroutine(EndGame(false));
         }
         coinsText.GetComponent<Text>().text = coinsLeft.ToString()+"/"+goalLimit.ToString();
     }
@@ -348,6 +349,8 @@ public class GameController : MonoBehaviour {
             {
                 players[selection].GetComponent<Movement>().locked = true;
                 lockIcons[selection].SetActive(true);
+                audioSource.clip = buttonClip;
+                audioSource.Play();
                 bool allLocked = true;
                 foreach (GameObject player in players)
                 {
@@ -393,9 +396,10 @@ public class GameController : MonoBehaviour {
         StartCoroutine(Waitabit(4.0f));
         
     }
-    public void EndGame(bool policeWin)
+    public IEnumerator EndGame(bool policeWin)
     {
-        if(policeWin)
+        yield return new WaitForSeconds(1);
+        if (policeWin)
             SceneManager.LoadScene("PoliceWin", LoadSceneMode.Single);
         else
             SceneManager.LoadScene("ThiefWin", LoadSceneMode.Single);

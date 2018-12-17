@@ -189,9 +189,12 @@ public class BurglarLogic : MonoBehaviour {
         {
             dumpster = other.gameObject;
         }
-        else if(other.tag == "hide")
+        
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "hide")
         {
-            Debug.Log("TAG " + transform.GetChild(0).name);
             transform.GetChild(0).gameObject.SetActive(false);
             bagUI.SetActive(false);
         }
