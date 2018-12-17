@@ -14833,7 +14833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602dbb9e16792524bbcfd7f5383fa7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playTest: 0
+  playTest: 1
   goalLimit: 20
   bankCoinsTotal: 20
   maxCoinsInBank: 5
