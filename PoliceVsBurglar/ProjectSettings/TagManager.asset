@@ -21,6 +21,10 @@ TagManager:
   - hide
   - characterSel
   - UIContainer
+  - TrunkUI
+  - BankUI
+  - DumpsterUI
+  - truck
   layers:
   - Default
   - TransparentFX

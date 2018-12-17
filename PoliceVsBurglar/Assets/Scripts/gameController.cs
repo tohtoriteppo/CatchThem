@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour {
     public Animator fadeAnimator;
     public Animator fadeAnimatorCharacterSelect;
     public AudioClip mainTheme;
+    public AudioClip buttonClip;
 
     public GameObject tutorial;
     private PlayableDirector Timeline;
@@ -193,12 +194,15 @@ public class GameController : MonoBehaviour {
                 characterSelection.SetActive(true);
                 inCharacterSelection = true;
                 fadeAnimator.Play("FadeOut");
-                
+                audioSource.clip = buttonClip;
+                audioSource.Play();
             }
             else if (menuSelection == 1)
             {
                 //exit game
                 Application.Quit();
+                audioSource.clip = buttonClip;
+                audioSource.Play();
             }
         }
         float dir = Input.GetAxis("p1_joystick_vertical");
@@ -386,7 +390,7 @@ public class GameController : MonoBehaviour {
             players[i].transform.position = startLocations.transform.GetChild(i).transform.position;
         }
         gameObject.GetComponent<PlayableDirector>().Play();
-        StartCoroutine(Waitabit(4.0f));        
+        StartCoroutine(Waitabit(4.0f));
         
     }
     public void EndGame(bool policeWin)
@@ -404,6 +408,11 @@ public class GameController : MonoBehaviour {
         gameStarted = true;
         startTime = Time.timeSinceLevelLoad;
         inTutorial = false;
-        
+        GameObject[] trucks = GameObject.FindGameObjectsWithTag("truck");
+        foreach (GameObject truck in trucks)
+        {
+            truck.GetComponent<truckMove>().StartMoving();
+        }
+
     }
 }

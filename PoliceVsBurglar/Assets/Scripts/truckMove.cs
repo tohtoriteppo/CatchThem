@@ -13,11 +13,12 @@ public class truckMove : MonoBehaviour {
     private NavMeshAgent agent;
     private int childCount;
     private int counter;
-    private int currentTarget = 0;
+    public int currentTarget = 0;
     private int coinsCarried;
     private Quaternion lidStartRotation;
     private Quaternion lidEndRotation;
     private AudioSource audioSource;
+    private GameController controller;
     public bool atDestination = false;
 
     void Start()
@@ -27,32 +28,38 @@ public class truckMove : MonoBehaviour {
         lidEndRotation *= Quaternion.Euler(90, 0, 0);
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        agent.destination = checkpointParent.transform.GetChild(currentTarget).transform.position;
+        agent.enabled = false;
         childCount = checkpointParent.transform.childCount;
         counter = (int)collectTime*60;
         dumpster = null;
         audioSource = GetComponent<AudioSource>();
+        controller = Camera.main.GetComponent<GameController>();
         //agent.updateUpAxis = false;
     }
 
     private void Update()
     {
-        
-        if(atDestination){
-            counter--;
-            if(counter <= 0)
+        if(controller.gameStarted)
+        {
+            if (atDestination)
             {
-                animator.Play("Trunk_close");
-                emptyDumpster();
-                changeTarget();
-                counter = (int)collectTime * 60;
+                counter--;
+                if (counter <= 0)
+                {
+                    animator.Play("Trunk_close");
+                    emptyDumpster();
+                    changeTarget();
+                    counter = (int)collectTime * 60;
+                }
             }
         }
+        
+        
     }
     private void OnTriggerEnter(Collider other)
     {
 
-        if(other.tag == "dumpster")
+        if(other.tag == "dumpster" && controller.gameStarted)
         {
             dumpster = other.gameObject;
             if(Vector3.Distance(dumpster.transform.parent.transform.position,agent.destination)<2.0f)
@@ -101,5 +108,10 @@ public class truckMove : MonoBehaviour {
     private void CloseLid()
     {
         transform.GetChild(0).rotation = lidStartRotation * Quaternion.Euler(90 / (counter + 1), 0, 0);
+    }
+    public void StartMoving()
+    {
+        agent.enabled = true;
+        agent.destination = checkpointParent.transform.GetChild(currentTarget).transform.position;
     }
 }

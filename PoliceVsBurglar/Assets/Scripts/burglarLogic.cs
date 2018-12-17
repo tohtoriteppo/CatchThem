@@ -14,6 +14,8 @@ public class BurglarLogic : MonoBehaviour {
     public AudioClip dumpCoinClip;
     public AudioClip gatherCoinClip;
     public AudioClip dropCoinClip;
+    public AudioClip respawnClip;
+    public AudioClip teleportClip;
     private GameObject respawnText;
     private GameObject dumpster;
     private List<GameObject> robbableObjects;
@@ -273,6 +275,8 @@ public class BurglarLogic : MonoBehaviour {
         respawning = true;
         movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
         dead = false;
+        audioSource.clip = respawnClip;
+        audioSource.Play();
         ReSizeBag();
     }
     private void incrementBag()
@@ -374,7 +378,8 @@ public class BurglarLogic : MonoBehaviour {
             teleportZap = Instantiate(teleportZapPrefab);
             teleportZap.transform.position = transform.position;
             transform.position = deadPosition;
-            
+            audioSource.clip = teleportClip;
+            audioSource.Play();
             //transform.position = new Vector3(phonePos.x, transform.position.y, phonePos.z);
         }
           

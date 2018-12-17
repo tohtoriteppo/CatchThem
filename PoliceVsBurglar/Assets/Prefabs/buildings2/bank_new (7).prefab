@@ -182,7 +182,7 @@ MeshFilter:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1250603452442410}
-  m_Mesh: {fileID: 4300014, guid: 3a24096c1cc345b4183eb41f6398aef9, type: 3}
+  m_Mesh: {fileID: 4300002, guid: 61c388cc1f64a93408085e71a1b89118, type: 3}
 --- !u!33 &33417846675991084
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -242,6 +242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   robAmount: 10
   coinsLeft: {fileID: 1976322875212364, guid: 50506d90bb4e7e14f8a257e024adabc8, type: 2}
+  bankUI: {fileID: 0}
+  bankPartition: {fileID: 0}
 --- !u!114 &114978640461475484
 MonoBehaviour:
   m_ObjectHideFlags: 1
