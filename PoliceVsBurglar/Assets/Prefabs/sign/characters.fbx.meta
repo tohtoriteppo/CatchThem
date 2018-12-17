@@ -1,15 +1,52 @@
 fileFormatVersion: 2
-guid: e58359addc5b44744962da103047e02b
+guid: 05a9ceeb2abd14848a054195f91a9a28
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
+    100002: typeMesh10
+    100004: typeMesh11
+    100006: typeMesh12
+    100008: typeMesh6
+    100010: typeMesh7
+    100012: typeMesh8
+    100014: typeMesh9
     400000: //RootNode
-    2100000: lambert1
-    2100002: lambert2
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: pCube1
+    400002: typeMesh10
+    400004: typeMesh11
+    400006: typeMesh12
+    400008: typeMesh6
+    400010: typeMesh7
+    400012: typeMesh8
+    400014: typeMesh9
+    2100000: typeBlinn5
+    2100002: typeBlinn6
+    2100004: typeBlinn7
+    2100006: typeBlinn8
+    2100008: typeBlinn9
+    2100010: typeBlinn10
+    2100012: typeBlinn11
+    2300000: typeMesh10
+    2300002: typeMesh11
+    2300004: typeMesh12
+    2300006: typeMesh6
+    2300008: typeMesh7
+    2300010: typeMesh8
+    2300012: typeMesh9
+    3300000: typeMesh10
+    3300002: typeMesh11
+    3300004: typeMesh12
+    3300006: typeMesh6
+    3300008: typeMesh7
+    3300010: typeMesh8
+    3300012: typeMesh9
+    4300000: typeMesh6
+    4300002: typeMesh7
+    4300004: typeMesh8
+    4300006: typeMesh9
+    4300008: typeMesh10
+    4300010: typeMesh11
+    4300012: typeMesh12
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -41,7 +78,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 25
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1

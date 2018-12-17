@@ -8,9 +8,8 @@ public class Arrow_UI : MonoBehaviour {
 
     public GameObject target;
     public int onright,ontop;
-    public int distance;
-    private Shader shader1;
-    private Shader shader2;
+    private int distance;
+   
     public float waitTime;
     public bool active,flash;
     private int count;
@@ -22,13 +21,12 @@ public class Arrow_UI : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        shader1 = Shader.Find("Mobile/Diffuse");
-        shader2 = Shader.Find("Custom/OutlineShader");
         flash = false;
         active = false;
         count = 0;
         waitTime = 0.5f;
         Flash_Time = 3;
+        distance = 50;
         //Vector3 pos = new Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider>().size.y, transform.position.z);
         transform.position = Camera.main.WorldToScreenPoint(target.transform.position);
         transform.position = new Vector3(transform.position.x+ontop*distance, transform.position.y + distance* onright);
@@ -56,8 +54,7 @@ public class Arrow_UI : MonoBehaviour {
     private IEnumerator WaitAndFlash(float waitTime)
     {
         gameObject.GetComponent<Image>().enabled = true;
-        target.GetComponent<Renderer>().material.shader = shader2;
-        count++;
+       count++;
         yield return new WaitForSeconds(waitTime);
 
         StartCoroutine(WaitAndNotFlash(waitTime));
@@ -66,7 +63,7 @@ public class Arrow_UI : MonoBehaviour {
     private IEnumerator WaitAndNotFlash(float waitTime)
     {
         gameObject.GetComponent<Image>().enabled = false;
-        target.GetComponent<Renderer>().material.shader = shader1;
+       
         yield return new WaitForSeconds(waitTime);
         if(count < Flash_Time)
          StartCoroutine(WaitAndFlash(waitTime));
