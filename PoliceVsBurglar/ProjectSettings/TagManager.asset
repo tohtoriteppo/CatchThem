@@ -25,6 +25,7 @@ TagManager:
   - BankUI
   - DumpsterUI
   - truck
+  - ambience
   layers:
   - Default
   - TransparentFX

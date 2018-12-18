@@ -33,6 +33,8 @@ public class GameController : MonoBehaviour {
     public AudioClip buttonClip;
     public AudioClip respawnClip;
 
+    public AudioSource countDownSound;
+    
     public GameObject skipObj;
     public GameObject tutorial;
     private PlayableDirector Timeline;
@@ -52,7 +54,7 @@ public class GameController : MonoBehaviour {
     private List<GameObject> players;
     private List<Transform> startMenuButtons;
     private AudioSource audioSource;
-
+    private GameObject ambienceObject;
     private int menuSelection;
     private bool inTutorial = false;
     public bool inStartMenu;
@@ -67,6 +69,7 @@ public class GameController : MonoBehaviour {
     private GameObject mainCanvas;
     // Use this for initialization
     void Start () {
+        ambienceObject = GameObject.Find("AmbienceMusic");
         Application.targetFrameRate = 60;
         audioSource = GetComponent<AudioSource>();
         //Timeline = tutorial.GetComponent<PlayableDirector>();
@@ -423,12 +426,20 @@ public class GameController : MonoBehaviour {
 
         }
         gameObject.GetComponent<PlayableDirector>().Play();
+        countDownSound.Play();
+        Debug.Log("HELOU");
+        ambienceObject.GetComponent<AudioSource>().Pause();
+        //SceneManager.LoadScene("PoliceWin", LoadSceneMode.Single);
         StartCoroutine(Waitabit(4.0f));
         skipObj.SetActive(false);
+        //ambienceObject.SetActive(false);
+        
     }
     public IEnumerator EndGame(bool policeWin)
     {
         yield return new WaitForSeconds(1);
+        ambienceObject.GetComponent<AudioSource>().Play();
+        //ambienceObject.SetActive(true);
         if (policeWin)
             SceneManager.LoadScene("PoliceWin", LoadSceneMode.Single);
         else

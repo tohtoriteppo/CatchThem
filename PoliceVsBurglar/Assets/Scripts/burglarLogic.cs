@@ -11,6 +11,7 @@ public class BurglarLogic : MonoBehaviour {
     public GameObject respawnEffect;
     public GameObject teleportZapPrefab;
     public GameObject respawnTextPrefab;
+    public AudioSource respawnSound;
     public AudioClip dumpCoinClip;
     public AudioClip gatherCoinClip;
     public AudioClip[] gatherCoinClips;
@@ -278,8 +279,7 @@ public class BurglarLogic : MonoBehaviour {
         respawning = true;
         movement.SetSpeed(Mathf.Max(minSpeed, originalSpeed - bagSize * slowAmount));
         dead = false;
-        controller.GetComponent<AudioSource>().clip = controller.respawnClip;
-        controller.GetComponent<AudioSource>().Play();
+        respawnSound.Play();
         ReSizeBag();
     }
     private void incrementBag()

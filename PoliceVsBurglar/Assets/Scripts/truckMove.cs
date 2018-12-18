@@ -9,6 +9,7 @@ public class truckMove : MonoBehaviour {
     public float collectTime;
     public AudioClip emptyClip;
     public AudioClip coinClip;
+    public AudioSource coinSound;
     private Animator animator;
     private GameObject dumpster;
     private NavMeshAgent agent;
@@ -101,10 +102,9 @@ public class truckMove : MonoBehaviour {
             dumpster.GetComponent<DumpsterLogic>().coinsInStash = 0;
             dumpster.GetComponent<DumpsterLogic>().UpdateValue();
             dumpster.GetComponent<DumpsterLogic>().CloseLid();
-            audioSource.clip = coinClip;
+            audioSource.clip = emptyClip;
             audioSource.Play();
-            controller.GetComponent<AudioSource>().clip = emptyClip;
-            controller.GetComponent<AudioSource>().Play();
+            coinSound.Play();
         }
         
     }
